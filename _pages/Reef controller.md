@@ -1,10 +1,10 @@
 ---
 layout: page
-title: submenus
+title: Reef Controller
 nav: true
 nav_order: 6
-dropdown: true
-children: 
+dropdown: False
+children:
     - title: publications
       permalink: /publications/
     - title: divider
