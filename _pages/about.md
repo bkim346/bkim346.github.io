@@ -5,9 +5,9 @@ permalink: /
 subtitle: <a href='#'>Affiliations</a>. Brown-NIH GPP Neuroscience Ph.D Candidate
 
 profile:
-  align: right
-  image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
+  align: left
+  image: profile.jpg
+  image_circular: true # crops the image to make it circular
   address: >
 
 
