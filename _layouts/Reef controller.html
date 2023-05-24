@@ -1,62 +1,58 @@
 ---
 layout: default
 ---
-<!-- _layouts/Reef controller.html -->
-<!DOCTYPE html>
+// index.html
+<!-- _layouts/Reef Controller.html -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<canvas id="data-chart"></canvas>
 
-<div class="post">
-
-  <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-description">{{ page.description }}</p>
-  </header>
-
-  <article>
-    {{ content }}
-  </article>
-
-</div>
-<html>
-<head>
-  <title>ESP8266 Data Graph</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-  <canvas id="myChart"></canvas>
-  <script>
-    // Retrieve data from ESP8266 using fetch()
-    fetch('http://example.com/data')
+<script>
+  function fetchData() {
+    fetch('https://your-server-url.com/api/sensor-values') // Replace with the URL of your server-side application
       .then(response => response.json())
       .then(data => {
-        // Parse data into format usable by Chart.js
-        const labels = data.map(datum => datum.timestamp);
-        const values = data.map(datum => datum.value);
+        const timestamps = data.map(entry => entry.timestamp);
+        const values = data.map(entry => entry.value);
 
-        // Create Chart.js graph
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const chart = new Chart(ctx, {
+        const ctx = document.getElementById('data-chart').getContext('2d');
+        new Chart(ctx, {
           type: 'line',
           data: {
-            labels: labels,
-            datasets: [{
-              label: 'ESP8266 Data',
-              data: values,
-              backgroundColor: 'rgba(255, 0, 0, 0.2)',
-              borderColor: 'rgba(0, 255, 0, 1)',
-              borderWidth: 1
-            }]
+            labels: timestamps,
+            datasets: [
+              {
+                label: 'Sensor Values',
+                data: values,
+                borderColor: 'blue',
+                fill: false
+              }
+            ]
           },
           options: {
+            responsive: true,
             scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true
+              x: {
+                display: true,
+                title: {
+                  display: true,
+                  text: 'Timestamp'
                 }
-              }]
+              },
+              y: {
+                display: true,
+                title: {
+                  display: true,
+                  text: 'Value'
+                }
+              }
             }
           }
         });
+      })
+      .catch(error => {
+        console.error(error);
       });
-  </script>
-</body>
-</html>
+  }
+
+  window.addEventListener('load', fetchData);
+</script
