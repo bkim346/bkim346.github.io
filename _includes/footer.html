@@ -1,13 +1,17 @@
     {% if site.footer_fixed %}
     <footer class="fixed-bottom">
       <div class="container mt-0">
-        &copy; Copyright {{ site.time | date: '%Y' }} {{ site.first_name }} {{ site.middle_name }} {{ site.last_name }}.
-        {%- if site.impressum_path -%}
-        <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
-        {%- endif -%}
-        {%- if site.last_updated -%}
-        Last updated: {{ "now" | date: '%B %d, %Y' }}.
-        {%- endif %}
+        <div style="text-align: center;">
+          <h1>Centered Text</h1>
+          &copy; Copyright {{ site.time | date: '%Y' }} {{ site.first_name }} {{ site.middle_name }} {{ site.last_name }}.
+          {%- if site.impressum_path -%}
+          <a href="{{ site.url }}{{ site.baseurl }}{{ site.impressum_path }}">Impressum</a>.
+          {%- endif -%}
+          {%- if site.last_updated -%}
+          Last updated: {{ "now" | date: '%B %d, %Y' }}.
+          {%- endif %}
+          </div>
+
       </div>
     </footer>
     {%- else -%}
