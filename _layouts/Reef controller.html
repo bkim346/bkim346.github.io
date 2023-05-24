@@ -31,7 +31,7 @@ layout: default
       ];
 
       // Create the scatter plot
-      const ctx = document.getElementById('scatter-chart').getContext('2d');
+      const ctx = document.getElementById('line-chart').getContext('2d');
       new Chart(ctx, {
         type: 'line',
         data: {
@@ -39,7 +39,9 @@ layout: default
             {
               label: 'Reef Plot',
               data: data,
+              borderColor:'rgba(0, 123, 255, 1)',
               backgroundColor: 'rgba(0, 123, 255, 1)', // Set the data point color
+              borderWidth: 2, // Set the line thickness
             },
           ],
         },
