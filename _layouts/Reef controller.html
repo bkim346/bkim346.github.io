@@ -69,88 +69,39 @@ layout: default
 </body>
 
 </html> -->
-
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Data Plot Example</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Text Display Example</title>
     <style>
-      #chart-container {
+      #text-container {
         background-color: #f2f2f2; /* Set the desired background color */
         padding: 10px; /* Add padding for spacing */
         border-radius: 5px; /* Add rounded corners */
+        font-family: Arial, sans-serif; /* Set the font family */
       }
     </style>
   </head>
   <body>
-    <div id="chart-container">
-      <canvas id="line-chart"></canvas>
-    </div>
+    <div id="text-container"></div>
 
     <script>
-      // Function to fetch data from the server
-      function fetchData() {
+      // Function to fetch text from the server
+      function fetchText() {
         fetch('https://172.58.242.83::91') // Replace with your server URL
           .then(response => response.text())
-          .then(data => {
-            // Process the fetched data
-            const lines = data.split('\n');
-            const labels = [];
-            const values = [];
-
-            // Extract labels and values
-            lines.forEach(line => {
-              const parts = line.split(',');
-              labels.push(parts[0]);
-              values.push(parseFloat(parts[1]));
-            });
-
-            // Create the line chart
-            const ctx = document.getElementById('line-chart').getContext('2d');
-            new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: labels,
-                datasets: [
-                  {
-                    label: 'Data Plot',
-                    data: values,
-                    borderColor: 'rgba(0, 123, 255, 1)',
-                    backgroundColor: 'rgba(0, 123, 255, 0.2)', // Set the area fill color
-                    borderWidth: 2, // Set the line thickness
-                  },
-                ],
-              },
-              options: {
-                responsive: true,
-                scales: {
-                  x: {
-                    display: true,
-                    title: {
-                      display: true,
-                      text: 'X-axis',
-                    },
-                  },
-                  y: {
-                    display: true,
-                    title: {
-                      display: true,
-                      text: 'Y-axis',
-                    },
-                  },
-                },
-              },
-            });
+          .then(text => {
+            // Update the text container
+            const textContainer = document.getElementById('text-container');
+            textContainer.textContent = text;
           })
           .catch(error => {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching text:', error);
           });
       }
 
-      // Call the fetchData function when the page loads
-      window.addEventListener('DOMContentLoaded', fetchData);
+      // Call the fetchText function when the page loads
+      window.addEventListener('DOMContentLoaded', fetchText);
     </script>
   </body>
 </html>
