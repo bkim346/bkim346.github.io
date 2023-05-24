@@ -1,58 +1,49 @@
----
-layout: default
----
-// index.html
-<!-- _layouts/Reef Controller.html -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<canvas id="data-chart"></canvas>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scatter Plot Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="scatter-chart"></canvas>
 
-<script>
-  function fetchData() {
-    fetch('https://your-server-url.com/api/sensor-values') // Replace with the URL of your server-side application
-      .then(response => response.json())
-      .then(data => {
-        const timestamps = data.map(entry => entry.timestamp);
-        const values = data.map(entry => entry.value);
+    <script>
+      // Data for the scatter plot
+      const data = [
+        { x: 1, y: 5 },
+        { x: 2, y: 3 },
+        { x: 3, y: 8 },
+        { x: 4, y: 4 },
+        { x: 5, y: 6 },
+      ];
 
-        const ctx = document.getElementById('data-chart').getContext('2d');
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: timestamps,
-            datasets: [
-              {
-                label: 'Sensor Values',
-                data: values,
-                borderColor: 'blue',
-                fill: false
-              }
-            ]
+      // Create the scatter plot
+      const ctx = document.getElementById('scatter-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              label: 'Scatter Plot',
+              data: data,
+              backgroundColor: 'rgba(0, 123, 255, 1)',
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'bottom',
+            },
+            y: {
+              type: 'linear',
+              position: 'left',
+            },
           },
-          options: {
-            responsive: true,
-            scales: {
-              x: {
-                display: true,
-                title: {
-                  display: true,
-                  text: 'Timestamp'
-                }
-              },
-              y: {
-                display: true,
-                title: {
-                  display: true,
-                  text: 'Value'
-                }
-              }
-            }
-          }
-        });
-      })
-      .catch(error => {
-        console.error(error);
+        },
       });
-  }
-
-  window.addEventListener('load', fetchData);
-</script
+    </script>
+  </body>
+</html>
