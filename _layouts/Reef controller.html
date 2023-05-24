@@ -7,9 +7,18 @@ layout: default
   <head>
     <title>Scatter Plot Example</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      #chart-container {
+        background-color: #f2f2f2; /* Set the desired background color */
+        padding: 10px; /* Add padding for spacing */
+        border-radius: 5px; /* Add rounded corners */
+      }
+    </style>
   </head>
   <body>
-    <canvas id="scatter-chart"></canvas>
+    <div id="chart-container">
+      <canvas id="scatter-chart"></canvas>
+    </div>
 
     <script>
       // Data for the scatter plot
@@ -30,8 +39,7 @@ layout: default
             {
               label: 'Scatter Plot',
               data: data,
-              backgroundColor: 'rgba(0, 123, 255, 1)', // Set the background color with transparency
-              borderColor: 'rgba(255, 255, 255, 1)', // Set the border color
+              backgroundColor: 'rgba(0, 123, 255, 1)', // Set the data point color
             },
           ],
         },
@@ -52,3 +60,4 @@ layout: default
     </script>
   </body>
 </html>
+
