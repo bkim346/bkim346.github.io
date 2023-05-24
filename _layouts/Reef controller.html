@@ -33,11 +33,11 @@ layout: default
       // Create the scatter plot
       const ctx = document.getElementById('scatter-chart').getContext('2d');
       new Chart(ctx, {
-        type: 'scatter',
+        type: 'line',
         data: {
           datasets: [
             {
-              label: 'Scatter Plot',
+              label: 'Reef Plot',
               data: data,
               backgroundColor: 'rgba(0, 123, 255, 1)', // Set the data point color
             },
