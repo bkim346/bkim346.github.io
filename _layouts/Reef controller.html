@@ -2,10 +2,9 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
-
 <head>
   {%- if page.redirect -%}
-  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
   <title>Line Chart</title>
@@ -13,9 +12,7 @@
 </head>
 
 <!-- Body -->
-
-<body
-  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
 
   <!-- Header -->
   {%- include header.html %}
@@ -23,10 +20,9 @@
   <!-- Content -->
   <div class="container mt-5">
     <h1>Line Chart</h1>
-    <div style="width: 800px; background-color: white; margin: 0 auto;">
+    <div style="max-width: 800px; margin: 0 auto; background-color: white;">
       <canvas id="myChart"></canvas>
     </div>
-
   </div>
 
   <!-- Footer -->
@@ -51,7 +47,7 @@
               data: responseArray.map(Number), // Convert responseArray to numbers
               borderColor: 'rgba(120, 224, 143, 1)',
               fill: false,
-              pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dots
+              pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
             }]
           },
           options: {
@@ -63,8 +59,7 @@
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 4,
-                  display: false // Hide the extra x-axis labels
+                  stepSize: 4
                 }
               },
               y: {
@@ -73,19 +68,10 @@
                   text: 'pH'
                 },
                 min: 7.7,
-                max: 8.4,
-                ticks: {
-                  display: false // Hide the extra y-axis labels
-                }
-              }
-            },
-            plugins: {
-              legend: {
-                display: false // Hide the legend if needed
+                max: 8.4
               }
             }
           }
-
         });
       });
   </script>
