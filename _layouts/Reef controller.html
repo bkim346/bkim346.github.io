@@ -6,78 +6,53 @@ layout: default
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Data Line Graph Example</title>
+  <title>Line Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div id="chart-container">
-    <canvas id="line-chart"></canvas>
-  </div>
+  <canvas id="myChart"></canvas>
 
   <script>
-    // Function to fetch data from the specified URL
-    function fetchData(url) {
-      fetch(url)
-        .then(response => response.text())
-        .then(html => {
-          // Extract the data from the webpage content
-          const dataStartIndex = html.indexOf('[');
-          const dataEndIndex = html.indexOf(']');
-          const dataString = html.slice(dataStartIndex + 1, dataEndIndex);
-          const dataArray = dataString.split(',');
+    // Retrieve the response data from the ESP8266 web server
+    fetch('https://bk-projects.serveo.net/')
+      .then(response => response.text())
+      .then(data => {
+        const response = data.trim();
+        const responseArray = response.split(',');
 
-          // Prepare the data for the chart
-          const chartData = [];
-          for (let i = 0; i < dataArray.length; i++) {
-            chartData.push({ x: i / 10, y: parseFloat(dataArray[i]) });
-          }
-
-          // Create the line chart
-          const ctx = document.getElementById('line-chart').getContext('2d');
-          new Chart(ctx, {
-            type: 'line',
-            data: {
-              datasets: [
-                {
-                  label: 'Data Line Graph',
-                  data: chartData,
-                  borderColor: 'rgba(0, 123, 255, 1)',
-                  backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                  borderWidth: 2,
-                  fill: true,
-                },
-              ],
-            },
-            options: {
-              responsive: true,
-              scales: {
-                x: {
-                  type: 'linear',
-                  position: 'bottom',
-                  min: 0,
-                  max: 24,
-                  ticks: {
-                    stepSize: 2,
-                  },
-                },
-                y: {
-                  type: 'linear',
-                  position: 'left',
-                },
+        // Create a line chart using Chart.js
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: Array.from({ length: 240 }, (_, i) => i / 10), // X-axis labels from 0 to 24
+            datasets: [{
+              label: 'Data',
+              data: responseArray.map(Number), // Convert responseArray to numbers
+              borderColor: 'blue',
+              backgroundColor: 'rgba(0, 0, 255, 0.2)',
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Time (hours)'
+                }
               },
-            },
-          });
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
+              y: {
+                title: {
+                  display: true,
+                  text: 'Value'
+                }
+              }
+            }
+          }
         });
-    }
-
-    // Specify the URL to fetch data from
-    const urlToFetch = 'https://bk-projects.serveo.net'; // Replace with your desired URL
-
-    // Call the fetchData function with the specified URL
-    fetchData(urlToFetch);
+      });
   </script>
 </body>
 </html>
