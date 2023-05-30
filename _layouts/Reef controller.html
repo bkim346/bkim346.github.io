@@ -4,7 +4,7 @@ layout: default
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Line Chart</title>
+  <title>Reef Live Data</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     canvas {
@@ -32,7 +32,7 @@ layout: default
           data: {
             labels: Array.from({ length: 240 }, (_, i) => i / 10), // X-axis labels from 0 to 24
             datasets: [{
-              label: 'Data',
+              label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
               borderColor: 'blue',
               backgroundColor: 'rgba(0, 0, 255, 0.2)',
@@ -43,25 +43,26 @@ layout: default
             responsive: true,
             scales: {
               x: {
+                display: true,
                 title: {
                   display: true,
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 12, // Show x-axis ticks every hour
-                  maxRotation: 0, // Prevent x-axis labels from rotating
-                  callback: (value) => value % 1 === 0 ? value + ':00' : '', // Show hours only for x-axis labels
+                  stepSize: 12,
+                  callback: (value) => (value % 1 === 0) ? `${value}:00` : null
                 }
               },
               y: {
+                display: true,
                 title: {
                   display: true,
                   text: 'pH'
                 },
-                min: 7.5, // Minimum value for the y-axis
-                max: 8.5, // Maximum value for the y-axis
+                suggestedMin: 7.5,
+                suggestedMax: 8.5,
                 ticks: {
-                  stepSize: 0.1 // Show y-axis ticks every 0.1 unit
+                  stepSize: 0.1
                 }
               }
             }
