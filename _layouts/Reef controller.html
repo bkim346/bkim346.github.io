@@ -1,71 +1,98 @@
----
-layout: default
----
 <!-- Reef controller.html -->
 
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Reef Live Data</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    canvas {
-      background-color: rgb(110, 108, 108);
-    }
-  </style>
-</head>
-<body>
-  <canvas id="myChart"></canvas>
+<html lang="{{ site.lang }}">
+  <!-- Head -->
+  <head>
+    {%- if page.redirect -%}
+    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+    {%- endif -%}
+    {% include head.html %}
 
-  <script>
-    // Retrieve the response data from the ESP8266 web server
-    fetch('https://bk-projects.serveo.net/')
-      .then(response => response.text())
-      .then(data => {
-        const response = data.trim();
-        const responseArray = response.split(',');
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        // Create a line chart using Chart.js
-        const ctx = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: Array.from({ length: 240 }, (_, i) => i / 10), // X-axis labels from 0 to 24
-            datasets: [{
-              data: responseArray.map(Number), // Convert responseArray to numbers
-              borderColor: 'blue',
-              backgroundColor: 'rgba(0, 0, 255, 0.2)',
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            scales: {
-              x: {
-                title: {
-                  display: true,
-                  text: 'Time (hours)'
+    <style>
+      canvas {
+        background-color: white;
+      }
+    </style>
+  </head>
+
+  <!-- Body -->
+  <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+
+    <!-- Header -->
+    {%- include header.html %}
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <canvas id="myChart"></canvas>
+    </div>
+
+    <!-- Footer -->
+    {%- include footer.html %}
+
+    <!-- JavaScripts -->
+    {% include scripts/jquery.html %}
+    {% include scripts/bootstrap.html %}
+    {% include scripts/masonry.html %}
+    {% include scripts/misc.html %}
+    {% include scripts/mathjax.html %}
+    {% include scripts/analytics.html %}
+    {% include scripts/progressBar.html %}
+
+    <!-- Custom Chart Script -->
+    <script>
+      // Retrieve the response data from the ESP8266 web server
+      fetch('https://bk-projects.serveo.net/')
+        .then(response => response.text())
+        .then(data => {
+          const response = data.trim();
+          const responseArray = response.split(',');
+
+          // Create a line chart using Chart.js
+          const ctx = document.getElementById('myChart').getContext('2d');
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: Array.from({ length: 240 }, (_, i) => i / 10), // X-axis labels from 0 to 24
+              datasets: [{
+                label: 'Reef Ph',
+                data: responseArray.map(Number), // Convert responseArray to numbers
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                fill: true
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Time (hours)'
+                  },
+                  ticks: {
+                    autoSkip: false,
+                    stepSize: 1 // Show x-axis ticks every hour
+                  }
                 },
-                ticks: {
-                  autoSkip: false,
-                  stepSize: 4 // Show x-axis ticks every hour
-                }
-              },
-              y: {
-                title: {
-                  display: true,
-                  text: 'pH'
-                },
-                min: 7.5, // Minimum value for the y-axis
-                max: 8.5, // Maximum value for the y-axis
-                ticks: {
-                  stepSize: 0.1 // Show y-axis ticks every 0.1 unit
+                y: {
+                  title: {
+                    display: true,
+                    text: 'pH'
+                  },
+                  min: 7.5, // Minimum value for the y-axis
+                  max: 8.5, // Maximum value for the y-axis
+                  ticks: {
+                    stepSize: 0.1 // Show y-axis ticks every 0.1 unit
+                  }
                 }
               }
             }
-          }
+          });
         });
-      });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
