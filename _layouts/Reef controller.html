@@ -1,10 +1,13 @@
----
-layout: default
----
 <!DOCTYPE html>
-<html>
+<html lang="{{ site.lang }}">
+
+<!-- Head -->
 <head>
-  <title>Reef Live Data</title>
+  {%- if page.redirect -%}
+    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+  {%- endif -%}
+  {% include head.html %}
+  <title>Line Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     canvas {
@@ -12,10 +15,32 @@ layout: default
     }
   </style>
 </head>
-<body>
-  <div style="max-width: 800px; margin: 0 auto;">
-    <canvas id="myChart"></canvas>
+
+<!-- Body -->
+<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+
+  <!-- Header -->
+  {%- include header.html %}
+
+  <!-- Content -->
+  <div class="container mt-5">
+    <h1>Line Chart</h1>
+    <div style="max-width: 800px; margin: 0 auto;">
+      <canvas id="myChart"></canvas>
+    </div>
   </div>
+
+  <!-- Footer -->
+  {%- include footer.html %}
+
+  <!-- JavaScripts -->
+  {% include scripts/jquery.html %}
+  {% include scripts/bootstrap.html %}
+  {% include scripts/masonry.html %}
+  {% include scripts/misc.html %}
+  {% include scripts/mathjax.html %}
+  {% include scripts/analytics.html %}
+  {% include scripts/progressBar.html %}
 
   <script>
     // Retrieve the response data from the ESP8266 web server
@@ -27,12 +52,12 @@ layout: default
 
         // Create a line chart using Chart.js
         const ctx = document.getElementById('myChart').getContext('2d');
-        new Chart(ctx, {
+        const chart = new Chart(ctx, {
           type: 'line',
           data: {
             labels: Array.from({ length: 240 }, (_, i) => i / 10), // X-axis labels from 0 to 24
             datasets: [{
-              label: 'pH',
+              label: 'Data',
               data: responseArray.map(Number), // Convert responseArray to numbers
               borderColor: 'blue',
               backgroundColor: 'rgba(0, 0, 255, 0.2)',
@@ -43,24 +68,24 @@ layout: default
             responsive: true,
             scales: {
               x: {
-                display: true,
                 title: {
                   display: true,
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 12,
-                  callback: (value) => (value % 1 === 0) ? `${value}:00` : null
+                  maxRotation: 0,
+                  autoSkip: true,
+                  maxTicksLimit: 25,
+                  callback: (value, index) => (index % 6 === 0) ? `${value}:00` : ''
                 }
               },
               y: {
-                display: true,
                 title: {
                   display: true,
                   text: 'pH'
                 },
-                suggestedMin: 7.5,
-                suggestedMax: 8.5,
+                min: 7.5,
+                max: 8.5,
                 ticks: {
                   stepSize: 0.1
                 }
@@ -68,7 +93,11 @@ layout: default
             }
           }
         });
+
+        // Force the chart to update to apply the options
+        chart.update();
       });
   </script>
 </body>
+
 </html>
