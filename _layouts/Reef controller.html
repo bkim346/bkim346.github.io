@@ -20,7 +20,7 @@
   <!-- Content -->
   <div class="container mt-5">
     <h1>Line Chart</h1>
-    <div style="max-width: 800px; margin: 0 auto;">
+    <div style="max-width: 800px; margin: 0 auto; background-color: white;">
       <canvas id="myChart"></canvas>
     </div>
   </div>
@@ -41,9 +41,9 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: Array.from({ length: 240 }, (_, i) => i / 10), // X-axis labels from 0 to 24
+            labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 10)}:00`), // X-axis labels from 0:00 to 23:00
             datasets: [{
-              label: 'Data',
+              label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
               borderColor: 'blue',
               backgroundColor: 'rgba(0, 0, 255, 0.2)',
@@ -59,29 +59,20 @@
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  maxRotation: 0,
-                  autoSkip: true,
-                  maxTicksLimit: 25,
-                  callback: (value, index) => (index % 6 === 0) ? `${value}:00` : ''
+                  stepSize: 1
                 }
               },
               y: {
                 title: {
                   display: true,
-                  text: 'pH'
+                  text: 'Value'
                 },
                 min: 7.5,
-                max: 8.5,
-                ticks: {
-                  stepSize: 0.1
-                }
+                max: 8.5
               }
             }
           }
         });
-
-        // Force the chart to update to apply the options
-        chart.update();
       });
   </script>
 </body>
