@@ -19,9 +19,12 @@ layout: default
     function fetchData(url) {
       fetch(url)
         .then(response => response.text())
-        .then(data => {
-          // Split the fetched data into an array of values
-          const dataArray = data.split(',');
+        .then(html => {
+          // Extract the data from the webpage content
+          const dataStartIndex = html.indexOf('[');
+          const dataEndIndex = html.indexOf(']');
+          const dataString = html.slice(dataStartIndex + 1, dataEndIndex);
+          const dataArray = dataString.split(',');
 
           // Prepare the data for the chart
           const chartData = [];
