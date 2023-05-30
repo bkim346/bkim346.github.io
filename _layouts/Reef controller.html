@@ -26,7 +26,7 @@
     <div style="width: 800px; background-color: white; margin: 0 auto;">
       <canvas id="myChart"></canvas>
     </div>
-    
+
   </div>
 
   <!-- Footer -->
@@ -50,7 +50,6 @@
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
               borderColor: 'rgba(120, 224, 143, 1)',
-              backgroundColor: 'rgba(0, 0, 255, 0.2)',
               fill: false,
               pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dots
             }]
@@ -58,25 +57,35 @@
           options: {
             responsive: true,
             scales: {
-              xAxis: {
+              x: {
                 title: {
                   display: true,
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 4
+                  stepSize: 4,
+                  display: false // Hide the extra x-axis labels
                 }
               },
-              yAxis: {
+              y: {
                 title: {
                   display: true,
                   text: 'pH'
                 },
                 min: 7.7,
-                max: 8.4
+                max: 8.4,
+                ticks: {
+                  display: false // Hide the extra y-axis labels
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false // Hide the legend if needed
               }
             }
           }
+
         });
       });
   </script>
