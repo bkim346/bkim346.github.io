@@ -1,8 +1,9 @@
 <!-- Reef controller.html -->
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Scatter Plot Example</title>
+  <title>Line Chart Example</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     #chart-container {
@@ -25,22 +26,22 @@
     let data = [];
 
     // Function to fetch data from the URL
-    function fetchData() {
-      fetch('https://bk-projects.serveo.net') // Replace with your URL
-        .then(response => response.text())
-        .then(text => {
-          // Split the text into an array of values
-          const values = text.split(',');
+    async function fetchData() {
+      try {
+        const response = await fetch('https://bk-projects.serveo.net'); // Replace with your URL
+        const text = await response.text();
 
-          // Parse the values and populate the data array
-          data = values.map(value => parseFloat(value));
+        // Split the text into an array of values
+        const values = text.split(',');
 
-          // Call the function to create the chart with the fetched data
-          createChart();
-        })
-        .catch(error => {
-          console.error('Error fetching data:', error);
-        });
+        // Parse the values and populate the data array
+        data = values.map(value => parseFloat(value));
+
+        // Call the function to create the chart with the fetched data
+        createChart();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
 
     // Function to create the chart with the fetched data
@@ -50,6 +51,7 @@
       new Chart(ctx, {
         type: 'line',
         data: {
+          labels: Array.from({ length: data.length }, (_, i) => i + 1), // Generate labels [1, 2, 3, ...]
           datasets: [
             {
               label: 'example Reef Plot',
