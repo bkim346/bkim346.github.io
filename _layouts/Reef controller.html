@@ -1,11 +1,6 @@
----
-layout: default
----
 <!-- Reef controller.html -->
-
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Scatter Plot Example</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,91 +15,70 @@ layout: default
     }
   </style>
 </head>
-
 <body>
   <div id="chart-container">
     <canvas id="line-chart"></canvas>
   </div>
 
   <script>
-    // Data for the scatter plot
-    const data = [
-      { x: 1, y: 5 },
-      { x: 2, y: 3 },
-      { x: 3, y: 8 },
-      { x: 4, y: 4 },
-      { x: 5, y: 6 },
-    ];
+    // Empty array to hold the fetched data
+    let data = [];
 
-    // Create the scatter plot
-    const ctx = document.getElementById('line-chart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        datasets: [
-          {
-            label: 'example Reef Plot',
-            data: data,
-            borderColor: 'rgba(0, 123, 255, 1)',
-            backgroundColor: 'rgba(0, 123, 255, 1)', // Set the data point color
-            borderWidth: 2, // Set the line thickness
-            fill: false,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            type: 'linear',
-            position: 'bottom',
-          },
-          y: {
-            type: 'linear',
-            position: 'left',
+    // Function to fetch data from the URL
+    function fetchData() {
+      fetch('https://bk-projects.serveo.net') // Replace with your URL
+        .then(response => response.text())
+        .then(text => {
+          // Split the text into an array of values
+          const values = text.split(',');
+
+          // Parse the values and populate the data array
+          data = values.map(value => parseFloat(value));
+
+          // Call the function to create the chart with the fetched data
+          createChart();
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
+    // Function to create the chart with the fetched data
+    function createChart() {
+      // Create the line chart
+      const ctx = document.getElementById('line-chart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          datasets: [
+            {
+              label: 'example Reef Plot',
+              data: data,
+              borderColor: 'rgba(0, 123, 255, 1)',
+              backgroundColor: 'rgba(0, 123, 255, 1)', // Set the data point color
+              borderWidth: 2, // Set the line thickness
+              fill: false,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              type: 'linear',
+              position: 'bottom',
+            },
+            y: {
+              type: 'linear',
+              position: 'left',
+            },
           },
         },
-      },
-    });
+      });
+    }
+
+    // Call the fetchData function when the page loads
+    window.addEventListener('DOMContentLoaded', fetchData);
   </script>
 </body>
-
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <title>Text Display Example</title>
-    <style>
-      #text-container {
-        background-color: #f2f2f2; /* Set the desired background color */
-        padding: 10px; /* Add padding for spacing */
-        border-radius: 5px; /* Add rounded corners */
-        font-family: Arial, sans-serif; /* Set the font family */
-      }
-    </style>
-  </head>
-  <body>
-    <div id="text-container"></div>
-
-    <script>
-      // Function to fetch text from the server
-      function fetchText() {
-        fetch('https://172.58.242.83:91') // Replace with your server URL
-          .then(response => response.text())
-          .then(text => {
-            // Update the text container
-            const textContainer = document.getElementById('text-container');
-            textContainer.textContent = text;
-          })
-          .catch(error => {
-            console.error('Error fetching text:', error);
-          });
-      }
-
-      // Call the fetchText function when the page loads
-      window.addEventListener('DOMContentLoaded', fetchText);
-    </script>
-  </body>
-</html> -->
