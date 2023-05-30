@@ -1,18 +1,13 @@
+---
+layout: default
+---
+<!-- Reef controller.html -->
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Line Chart Example</title>
+  <title>Data Line Graph Example</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    #chart-container {
-      background-color: #f2f2f2;
-      /* Set the desired background color */
-      padding: 10px;
-      /* Add padding for spacing */
-      border-radius: 5px;
-      /* Add rounded corners */
-    }
-  </style>
 </head>
 <body>
   <div id="chart-container">
@@ -20,73 +15,66 @@
   </div>
 
   <script>
-    // Empty array to hold the fetched data
-    let data = [];
+    // Function to fetch data from the specified URL
+    function fetchData(url) {
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          // Split the fetched data into an array of values
+          const dataArray = data.split(',');
 
-    // Function to fetch data from the URL
-    async function fetchData() {
-      try {
-        console.log('Fetching data...');
-        const response = await fetch('https://bk-projects.serveo.net'); // Replace with your URL
-        console.log('Response:', response);
-        const text = await response.text();
-        console.log('Fetched text:', text);
+          // Prepare the data for the chart
+          const chartData = [];
+          for (let i = 0; i < dataArray.length; i++) {
+            chartData.push({ x: i / 10, y: parseFloat(dataArray[i]) });
+          }
 
-        // Split the text into an array of values
-        const values = text.split(',');
-        console.log('Split values:', values);
-
-        // Parse the values and populate the data array
-        data = values.map(value => parseFloat(value));
-        console.log('Parsed data:', data);
-
-        // Call the function to create the chart with the fetched data
-        createChart();
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
+          // Create the line chart
+          const ctx = document.getElementById('line-chart').getContext('2d');
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              datasets: [
+                {
+                  label: 'Data Line Graph',
+                  data: chartData,
+                  borderColor: 'rgba(0, 123, 255, 1)',
+                  backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                  borderWidth: 2,
+                  fill: true,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              scales: {
+                x: {
+                  type: 'linear',
+                  position: 'bottom',
+                  min: 0,
+                  max: 24,
+                  ticks: {
+                    stepSize: 2,
+                  },
+                },
+                y: {
+                  type: 'linear',
+                  position: 'left',
+                },
+              },
+            },
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
     }
 
-    // Function to create the chart with the fetched data
-    function createChart() {
-      console.log('Creating chart...');
-      // Create the line chart
-      const ctx = document.getElementById('line-chart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: Array.from({ length: data.length }, (_, i) => i + 1), // Generate labels [1, 2, 3, ...]
-          datasets: [
-            {
-              label: 'example Reef Plot',
-              data: data,
-              borderColor: 'rgba(0, 123, 255, 1)',
-              backgroundColor: 'rgba(0, 123, 255, 1)', // Set the data point color
-              borderWidth: 2, // Set the line thickness
-              fill: false,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              type: 'linear',
-              position: 'bottom',
-            },
-            y: {
-              type: 'linear',
-              position: 'left',
-            },
-          },
-        },
-      });
-      console.log('Chart created!');
-    }
+    // Specify the URL to fetch data from
+    const urlToFetch = 'https://bk-projects.serveo.net'; // Replace with your desired URL
 
-    // Call the fetchData function when the page loads
-    console.log('Page loaded. Fetching data...');
-    fetchData();
+    // Call the fetchData function with the specified URL
+    fetchData(urlToFetch);
   </script>
 </body>
 </html>
