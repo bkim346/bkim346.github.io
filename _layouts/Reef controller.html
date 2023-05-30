@@ -6,11 +6,11 @@ layout: default
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Line Chart</title>
+  <title>Reef Live Data</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     canvas {
-      background-color: white;
+      background-color: rgb(110, 108, 108);
     }
   </style>
 </head>
@@ -47,7 +47,8 @@ layout: default
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 12 // Show x-axis ticks every hour
+                  autoSkip: false,
+                  stepSize: 4 // Show x-axis ticks every hour
                 }
               },
               y: {
