@@ -8,6 +8,11 @@ layout: default
 <head>
   <title>Line Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    canvas {
+      background-color: white;
+    }
+  </style>
 </head>
 <body>
   <canvas id="myChart"></canvas>
@@ -46,8 +51,10 @@ layout: default
               y: {
                 title: {
                   display: true,
-                  text: 'Value'
-                }
+                  text: 'pH'
+                },
+                suggestedMin: 7.5, // Minimum value for the y-axis
+                suggestedMax: 8.5 // Maximum value for the y-axis
               }
             }
           }
