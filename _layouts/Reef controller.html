@@ -7,7 +7,7 @@
     <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
-  <title>Live reef data</title>
+  <title>Reef Live Data</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -19,7 +19,7 @@
 
   <!-- Content -->
   <div class="container mt-5">
-    <h1>Line Chart</h1>
+    <h1>Reef Live Data</h1>
     <div style="max-width: 800px; margin: 0 auto; background-color: white;">
       <canvas id="myChart"></canvas>
     </div>
@@ -41,7 +41,7 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: ['0:00', '4:00', '8:00', '12:00', '16:00', '20:00'], // X-axis labels for every 4 hours
+            labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 10)}:00`), // X-axis labels from 0:00 to 23:00
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
@@ -58,6 +58,9 @@
                   display: true,
                   text: 'Time (hours)'
                 },
+                ticks: {
+                  stepSize: 12
+                }
               },
               y: {
                 title: {
