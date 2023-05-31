@@ -66,7 +66,7 @@
                   autoSkip: true,
                   maxTicksLimit: 6, // Show maximum 6 ticks on the x-axis
                   maxRotation: 0, // Prevent label rotation
-                  callback: (value, index) => {
+                  callback: (value, index, values) => {
                     if (index % 4 === 0) {
                       const [hour, minutes] = value.split(':');
                       return `${hour}:${minutes.padStart(2, '0')}`; // Format the label as HH:MM
