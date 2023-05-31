@@ -44,7 +44,7 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 10)}:00`), // X-axis labels from 0:00 to 23:00
+            labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 40)}:00`), // X-axis labels from 0:00 to 23:00
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
@@ -61,11 +61,6 @@
                   display: true,
                   text: 'Time (hours)'
                 },
-                ticks: {
-                  suggestedMax: 23, // Maximum value on x-axis (hours)
-                  suggestedMin: 0, // Minimum value on x-axis (hours)
-                  stepSize: 4 // Spacing between ticks (4 hours)
-                }
               },
               y: {
                 title: {
