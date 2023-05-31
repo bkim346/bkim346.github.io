@@ -2,9 +2,10 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
+
 <head>
   {%- if page.redirect -%}
-    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
   <title>Line Chart</title>
@@ -12,7 +13,9 @@
 </head>
 
 <!-- Body -->
-<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+
+<body
+  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
 
   <!-- Header -->
   {%- include header.html %}
@@ -59,7 +62,9 @@
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 12
+                  suggestedMax: 23, // Maximum value on x-axis (hours)
+                  suggestedMin: 0, // Minimum value on x-axis (hours)
+                  stepSize: 4 // Spacing between ticks (4 hours)
                 }
               },
               y: {
