@@ -2,10 +2,9 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
-
 <head>
   {%- if page.redirect -%}
-  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
   <title>Line Chart</title>
@@ -13,9 +12,7 @@
 </head>
 
 <!-- Body -->
-
-<body
-  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
 
   <!-- Header -->
   {%- include header.html %}
@@ -44,7 +41,11 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: ['0:00', '4:00', '8:00', '12:00', '16:00', '20:00' , '23:00'], // X-axis labels for every 4 hours
+            labels: Array.from({ length: 240 }, (_, i) => {
+              const hour = Math.floor(i / 10);
+              const minutes = (i % 10) * 6;
+              return `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            }), // X-axis labels from 0:00 to 23:50
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
@@ -61,6 +62,16 @@
                   display: true,
                   text: 'Time (hours)'
                 },
+                ticks: {
+                  maxTicksLimit: 6, // Show maximum 6 ticks on the x-axis
+                  maxRotation: 0, // Prevent label rotation
+                  callback: (value, index) => {
+                    if (index % 4 === 0) {
+                      return value; // Show the label for every 4th tick
+                    }
+                    return ''; // Hide the label for other ticks
+                  }
+                }
               },
               y: {
                 title: {
