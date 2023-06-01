@@ -46,9 +46,12 @@
           data: {
             labels: Array.from({ length: 288 }, (_, i) => {
               const hour = Math.floor(i / 12);
-              const minutes = (i % 12) * 5;
-              return `${hour}:${minutes.toString().padStart(2, '0')}`;
-            }), // X-axis labels from 0:00 to 23:55
+              if (i % 12 === 0) {
+                return `${hour}:00`;
+              } else {
+                return '';
+              }
+            }),
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
