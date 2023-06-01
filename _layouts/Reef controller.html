@@ -41,7 +41,7 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 10)}:00`), // X-axis labels from 0:00 to 23:00
+            labels: Array.from({ length: 288 }, (_, i) => `${Math.floor(i / 12)}:00`), // X-axis labels from 0:00 to 23:00
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
