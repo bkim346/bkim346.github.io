@@ -75,23 +75,33 @@
               }
             },
             plugins: {
-              annotation: {
-                annotations: {
-                  currentTime: {
-                    type: 'line',
-                    xMin: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-                    xMax: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-                    borderColor: 'red',
-                    borderWidth: 1,
-                    borderDash: [5, 5],
-                    drawTime: 'afterDatasetsDraw' // Specify when to draw the annotation (after datasets are drawn)
-                  }
-                }
+              afterDraw: chart => {
+                const ctx = chart.ctx;
+                const xScale = chart.scales.x;
+                const yScale = chart.scales.y;
+
+                const currentTime = new Date();
+                const currentHour = currentTime.getHours();
+                const currentMinute = currentTime.getMinutes();
+                const currentX = xScale.getPixelForValue(`${currentHour}:00`);
+                const yTop = yScale.getPixelForValue(8.5);
+                const yBottom = yScale.getPixelForValue(7.9);
+
+                ctx.save();
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(currentX, yTop);
+                ctx.lineTo(currentX, yBottom);
+                ctx.stroke();
+                ctx.restore();
               }
             }
           }
         });
       });
+
   </script>
 </body>
 
