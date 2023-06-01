@@ -2,20 +2,18 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
-
 <head>
   {%- if page.redirect -%}
-  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
   <title>Reef Live Data</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 
 <!-- Body -->
-
-<body
-  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
 
   <!-- Header -->
   {%- include header.html %}
@@ -53,7 +51,7 @@
           },
           {
             label: 'Current Time',
-            data: [{ x: new Date(), y: 7.9 }, { x: new Date(), y: 8.5 }],
+            data: [{ x: moment(), y: 7.9 }, { x: moment(), y: 8.5 }],
             borderColor: 'red',
             backgroundColor: 'red',
             borderWidth: 1,
@@ -95,8 +93,6 @@
           }
         });
       });
-
-
   </script>
 </body>
 
