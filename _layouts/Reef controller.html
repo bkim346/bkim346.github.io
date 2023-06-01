@@ -41,7 +41,7 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: Array.from({ length: 6 }, (_, i) => i * 4).flatMap(hour => [`${hour}:00`, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']),// X-axis labels from 0:00 to 23:00
+            labels: Array.from({ length: 6 }, (_, i) => i * 4).flatMap(hour => [`${hour}:00`, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']),// X-axis labels from 0:00 to 23:00
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
@@ -59,7 +59,7 @@
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 12
+                  stepSize: 1
                 }
               },
               y: {
