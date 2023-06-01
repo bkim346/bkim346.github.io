@@ -2,9 +2,10 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
+
 <head>
   {%- if page.redirect -%}
-    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
   <title>Reef Live Data</title>
@@ -12,7 +13,9 @@
 </head>
 
 <!-- Body -->
-<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+
+<body
+  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
 
   <!-- Header -->
   {%- include header.html %}
@@ -59,7 +62,7 @@
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 48
+                  stepSize: 12
                 }
               },
               y: {
@@ -82,21 +85,6 @@
                     borderWidth: 1,
                     borderDash: [5, 5],
                     drawTime: 'afterDatasetsDraw' // Specify when to draw the annotation (after datasets are drawn)
-                  }
-                }
-              }
-            },
-            plugins: {
-              annotation: {
-                drawTime: 'afterDraw', // Specify when to draw the annotations (after the chart is drawn)
-                annotations: {
-                  currentLine: {
-                    type: 'line',
-                    xMin: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-                    xMax: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-                    borderColor: 'red',
-                    borderWidth: 1,
-                    borderDash: [5, 5]
                   }
                 }
               }
