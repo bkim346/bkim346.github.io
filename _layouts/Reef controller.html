@@ -9,8 +9,6 @@
   {% include head.html %}
   <title>Reef Live Data</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.1.1/dist/chartjs-adapter-moment.min.js"></script>
 </head>
 
 <!-- Body -->
@@ -40,46 +38,28 @@
 
         // Create a line chart using Chart.js
         const ctx = document.getElementById('myChart').getContext('2d');
-
-        // Modify the datasets
-        const datasets = [
-          {
-            label: 'pH',
-            data: responseArray.map(Number),
-            borderColor: 'rgba(120, 224, 143, 1)',
-            fill: false,
-            pointBackgroundColor: 'rgba(120, 224, 143, 1)'
-          },
-          {
-            label: 'Current Time',
-            data: [{ t: moment(), y: 7.9 }, { t: moment(), y: 8.5 }],
-            borderColor: 'red',
-            backgroundColor: 'red',
-            borderWidth: 1,
-            pointRadius: 0,
-            showLine: false
-          }
-        ];
-
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            datasets: datasets
+            labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 10)}:00`), // X-axis labels from 0:00 to 23:00
+            datasets: [{
+              label: 'pH',
+              data: responseArray.map(Number), // Convert responseArray to numbers
+              borderColor: 'rgba(120, 224, 143, 1)',
+              fill: false,
+              pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+            }]
           },
           options: {
             responsive: true,
             scales: {
               x: {
-                type: 'time',
                 title: {
                   display: true,
-                  text: 'Time'
+                  text: 'Time (hours)'
                 },
-                time: {
-                  unit: 'hour',
-                  displayFormats: {
-                    hour: 'HH:mm'
-                  }
+                ticks: {
+                  stepSize: 12
                 }
               },
               y: {
@@ -89,6 +69,20 @@
                 },
                 min: 7.9,
                 max: 8.5
+              }
+            },
+            plugins: {
+              annotation: {
+                annotations: {
+                  currentTime: {
+                    type: 'line',
+                    xMin: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                    xMax: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                    borderColor: 'red',
+                    borderWidth: 1,
+                    borderDash: [5, 5]
+                  }
+                }
               }
             }
           }
