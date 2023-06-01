@@ -33,59 +33,69 @@
 
   <script>
     // Retrieve the response data from the ESP8266 web server
-    // Retrieve the response data from the ESP8266 web server
-fetch('https://bk-projects.serveo.net/')
-  .then(response => response.text())
-  .then(data => {
-    const response = data.trim();
-    const responseArray = response.split(',');
+    fetch('https://bk-projects.serveo.net/')
+      .then(response => response.text())
+      .then(data => {
+        const response = data.trim();
+        const responseArray = response.split(',');
 
-    // Create a line chart using Chart.js
-    const ctx = document.getElementById('myChart').getContext('2d');
+        // Create a line chart using Chart.js
+        const ctx = document.getElementById('myChart').getContext('2d');
 
-    // Modify the dataset to include the red vertical line
-    const dataset = {
-      label: 'pH',
-      data: responseArray.map(Number), // Convert responseArray to numbers
-      borderColor: 'rgba(120, 224, 143, 1)',
-      fill: false,
-      pointBackgroundColor: 'rgba(120, 224, 143, 1)', // Seafoam green color for the plotted dot
-      spanGaps: true, // Allow drawing a line between NaN values
-    };
-
-    const currentTimeIndex = Math.floor(new Date().getHours() * 12 + new Date().getMinutes() / 5);
-    dataset.data[currentTimeIndex] = 8.5; // Set the pH value to 8.5 for the current time index
-
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: Array.from({ length: responseArray.length }, (_, i) => `${Math.floor(i / 12)}:00`), // X-axis labels from 0:00 to 23:55
-        datasets: [dataset]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Time (hours)'
-            },
-            ticks: {
-              stepSize: 12
-            }
+        // Modify the datasets
+        const datasets = [
+          {
+            label: 'pH',
+            data: responseArray.map(Number),
+            borderColor: 'rgba(120, 224, 143, 1)',
+            fill: false,
+            pointBackgroundColor: 'rgba(120, 224, 143, 1)'
           },
-          y: {
-            title: {
-              display: true,
-              text: 'pH'
-            },
-            min: 7.9,
-            max: 8.5
+          {
+            label: 'Current Time',
+            data: [{ x: new Date(), y: 7.9 }, { x: new Date(), y: 8.5 }],
+            borderColor: 'red',
+            backgroundColor: 'red',
+            borderWidth: 1,
+            pointRadius: 0,
+            showLine: false
           }
-        }
-      }
-    });
-  });
+        ];
+
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                type: 'time',
+                title: {
+                  display: true,
+                  text: 'Time'
+                },
+                time: {
+                  unit: 'hour',
+                  displayFormats: {
+                    hour: 'HH:mm'
+                  }
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'pH'
+                },
+                min: 7.9,
+                max: 8.5
+              }
+            }
+          }
+        });
+      });
+
 
   </script>
 </body>
