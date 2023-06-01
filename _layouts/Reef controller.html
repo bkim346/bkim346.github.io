@@ -9,7 +9,8 @@
   {% include head.html %}
   <title>Reef Live Data</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.1.1/dist/chartjs-adapter-moment.min.js"></script>
 </head>
 
 <!-- Body -->
@@ -51,7 +52,7 @@
           },
           {
             label: 'Current Time',
-            data: [{ x: moment(), y: 7.9 }, { x: moment(), y: 8.5 }],
+            data: [{ t: moment(), y: 7.9 }, { t: moment(), y: 8.5 }],
             borderColor: 'red',
             backgroundColor: 'red',
             borderWidth: 1,
