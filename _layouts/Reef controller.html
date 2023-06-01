@@ -41,7 +41,7 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            //labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 10)}:00`), // X-axis labels from 0:00 to 23:00
+            labels: Array.from({ length: 240 }, (_, i) => `${Math.floor(i / 10)}:00`), // X-axis labels from 0:00 to 23:00
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
@@ -82,6 +82,21 @@
                     borderWidth: 1,
                     borderDash: [5, 5],
                     drawTime: 'afterDatasetsDraw' // Specify when to draw the annotation (after datasets are drawn)
+                  }
+                }
+              }
+            },
+            plugins: {
+              annotation: {
+                drawTime: 'afterDraw', // Specify when to draw the annotations (after the chart is drawn)
+                annotations: {
+                  currentLine: {
+                    type: 'line',
+                    xMin: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                    xMax: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                    borderColor: 'red',
+                    borderWidth: 1,
+                    borderDash: [5, 5]
                   }
                 }
               }
