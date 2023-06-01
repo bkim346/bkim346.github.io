@@ -2,9 +2,10 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
+
 <head>
   {%- if page.redirect -%}
-    <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
   <title>Reef Live Data</title>
@@ -12,7 +13,9 @@
 </head>
 
 <!-- Body -->
-<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+
+<body
+  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
 
   <!-- Header -->
   {%- include header.html %}
@@ -41,7 +44,11 @@
         const chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: Array.from({ length: 6 }, (_, i) => i * 4).flatMap(hour => [`${hour}:00`, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']),// X-axis labels from 0:00 to 23:00
+            labels: Array.from({ length: 288 }, (_, i) => {
+              const hour = Math.floor(i / 12);
+              const minutes = (i % 12) * 5;
+              return `${hour}:${minutes.toString().padStart(2, '0')}`;
+            }), // X-axis labels from 0:00 to 23:55
             datasets: [{
               label: 'pH',
               data: responseArray.map(Number), // Convert responseArray to numbers
@@ -59,7 +66,9 @@
                   text: 'Time (hours)'
                 },
                 ticks: {
-                  stepSize: 48
+                  maxRotation: 0,
+                  autoSkip: true,
+                  maxTicksLimit: 24 // Maximum number of x-axis ticks to display
                 }
               },
               y: {
