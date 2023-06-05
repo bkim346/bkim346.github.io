@@ -33,7 +33,7 @@
 
   <script>
     // Retrieve the response data from the ESP8266 web server
-    fetch('http://35.192.54.39/api/messages/pH')
+    fetch('https://reef-controller.duckdns.org/api/messages/pH')
       .then(response => response.text())
       .then(data => {
         const response = data.trim();
