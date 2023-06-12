@@ -73,18 +73,19 @@ function fetchDataAndRefreshChart() {
                 }
               }),
               datasets: [{
-                label: 'pH',
-                data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
-                borderColor: 'rgba(120, 224, 143, 1)',
-                fill: false,
-                pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
-              }, {
                 label: 'Current Index',
                 data: dataArray,
                 type: 'scatter',
                 backgroundColor: 'rgba(0, 77, 64, 1)', // Red color for the plotted dot
                 pointRadius: 5
-              }]
+              },                
+              {
+                label: 'pH',
+                data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
+                borderColor: 'rgba(120, 224, 143, 1)',
+                fill: false,
+                pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+              } ]
             },
             options: {
               responsive: true,
