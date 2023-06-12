@@ -41,14 +41,13 @@
         .then(pHData => {
           // Fetch the current index data
           fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
-            .then(response => response.text())
-            .then(currentIndData => {
+            .then(response => response.json())
+            .then(data => {
+              const currentIndResponse = parseInt(data[0]);
+              console.log("currentIndResponse:", currentIndResponse);
+
               const pHResponse = pHData.trim();
               const pHResponseArray = pHResponse.split(',');
-
-              console.log("currentIndData:", currentIndData);
-              const currentIndResponse = parseInt(currentIndData[0].substring(1, currentIndData[0].length - 1));
-              console.log("currentIndResponse:", currentIndResponse);
 
               console.log('Current Ind X', currentIndData);
               console.log('Current Ind parsed', currentIndResponse);
