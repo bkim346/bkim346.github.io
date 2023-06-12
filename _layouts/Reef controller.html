@@ -43,7 +43,7 @@ function fetchDataAndRefreshChart() {
       fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
         .then(response => response.json())
         .then(currentIndResponse => {
-          currentIndResponse = parseInt(currentIndResponse);
+          currentIndResponse = parseInt(currentIndResponse); // Parse the string to an integer
 
           const pHResponse = pHData.trim();
           const pHResponseArray = pHResponse.split(',');
@@ -60,14 +60,10 @@ function fetchDataAndRefreshChart() {
           myChart = new Chart(ctx, {
             type: 'line',
             data: {
-              labels: Array.from({ length: 289 }, (_, i) => {
+              labels: Array.from({ length: 288 }, (_, i) => {
                 const hour = Math.floor(i / 12);
                 const minute = (i % 12) * 5;
-                if (i === 288) {
-                  return '24:00';
-                } else {
-                  return `${hour}:${minute.toString().padStart(2, '0')}`;
-                }
+                return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
               }),
               datasets: [{
                 label: 'pH',
@@ -78,7 +74,7 @@ function fetchDataAndRefreshChart() {
               }, {
                 label: 'Current Index',
                 data: [{
-                  x: currentIndResponse * 12, // Multiply by 12 to convert to the correct index on the x-axis
+                  x: currentIndResponse,
                   y: parseFloat(pHResponseArray[currentIndResponse])
                 }],
                 type: 'scatter',
