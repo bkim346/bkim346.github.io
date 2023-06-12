@@ -48,6 +48,8 @@ function fetchDataAndRefreshChart() {
 
           const currentIndResponse = parseInt(currentIndData.trim()); // Assuming the response is a single number between 1 and 288
 
+          console.log('Current Ind:', parseFloat(pHResponseArray[currentIndResponse - 1]));
+
           // Create a line chart using Chart.js
           const ctx = document.getElementById('myChart').getContext('2d');
 
