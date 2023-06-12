@@ -140,35 +140,7 @@
     // Refresh chart every minute
     setInterval(fetchDataAndRefreshChart, 300000);
 
-  </script>
-  <!DOCTYPE html>
-<html lang="{{ site.lang }}">
-<!-- Head -->
-<head>
-  {%- if page.redirect -%}
-  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
-  {%- endif -%}
-  {% include head.html %}
-  <title>Reef Live Data</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-</head>
-<!-- Body -->
-<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
-  <!-- Header -->
-  {%- include header.html %}
-  <!-- Content -->
-  <div class="container mt-5">
-    <h1>Reef Live Data</h1>
-    <div style="margin: 0 auto; background-color: white;">
-      <canvas id="myChart" width="400" height="400"></canvas>
-    </div>
-  </div>
-  <!-- Footer -->
-  {%- include footer.html %}
-  
-  <script>
-    // Chart.js code here
-  </script>
+  </script
   
   {% include scripts/jquery.html %}
   {% include scripts/bootstrap.html %}
