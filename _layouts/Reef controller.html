@@ -65,15 +65,6 @@
                     borderColor: 'rgba(120, 224, 143, 1)',
                     fill: false,
                     pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
-                  }, {
-                    label: 'Current Index',
-                    data: [{
-                      x: currentIndResponse - 1, // Subtract 1 to convert the index to zero-based array index
-                      y: parseFloat(pHResponseArray[currentIndResponse - 1]) // Convert pH value to a number
-                    }],
-                    type: 'scatter',
-                    pointBackgroundColor: 'rgba(0, 77, 64, 1)', // Red color for the plotted dot
-                    pointRadius: 5
                   }]
                 },
                 options: {
@@ -99,6 +90,22 @@
                       max: 8.5
                     }
                   },
+                  plugins: {
+                    tooltip: {
+                      callbacks: {
+                        label: function(context) {
+                          var index = context.dataIndex;
+                          var dataset = context.datasetIndex;
+                          if (dataset === 0) {
+                            return "pH: " + context.raw;
+                          } else if (dataset === 1 && index === currentIndResponse - 1) {
+                            return "Current Index: " + context.raw;
+                          }
+                          return null;
+                        }
+                      }
+                    }
+                  }
                 }
               });
             });
@@ -109,7 +116,7 @@
     fetchDataAndRefreshChart();
 
     // Refresh chart every minute
-    setInterval(fetchDataAndRefreshChart, 300000);
+    setInterval(fetchDataAndRefreshChart, 60000);
   </script>
 </body>
 
