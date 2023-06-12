@@ -47,7 +47,7 @@
               const pHResponseArray = pHResponse.split(',');
 
               console.log("currentIndData:", currentIndData);
-              const currentIndResponse = parseInt(currentIndData[0].trim());
+              const currentIndResponse = parseInt(currentIndData[0].substring(1, currentIndData[0].length - 1));
               console.log("currentIndResponse:", currentIndResponse);
 
               console.log('Current Ind X', currentIndData);
