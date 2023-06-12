@@ -73,7 +73,7 @@
                     }
                   }),
                   datasets: [{
-                      label: 'Current Ph:',
+                      label: 'pH',
                       data: dataArray,
                       type: 'scatter',
                       backgroundColor: 'rgba(0, 77, 64, 1)', // Red color for the plotted dot
@@ -112,20 +112,14 @@
                     }
                   },
                   plugins: {
-                    legend: {
+                    title: {
                       display: true,
-                      labels: {
-                        filter: function (legendItem, chartData) {
-                          return legendItem.datasetIndex === 0; // Show only the first legend item
-                        },
-                        formatter: function (value, context) {
-                          if (context.datasetIndex === 0) {
-                            const currentPh = parseFloat(pHResponseArray[currentIndResponse]);
-                            return `Current Ph: ${currentPh.toFixed(2)}`;
-                          } else {
-                            return value;
-                          }
-                        }
+                      text: `Current Ph: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
+                      position: 'top',
+                      align: 'start',
+                      padding: {
+                        top: 10,
+                        bottom: 0
                       }
                     }
                   }
