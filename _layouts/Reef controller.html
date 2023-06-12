@@ -44,14 +44,17 @@
               const pHResponse = pHData.trim();
               const pHResponseArray = pHResponse.split(',');
 
-              const currentIndResponse = currentIndData.trim(); // Assuming the response is a single number between 1 and 288
-
-              console.log('pH Response Array:', pHResponseArray);
-              console.log('Current Ind Response:', currentIndResponse);
+              const currentIndResponse = parseInt(currentIndData.trim()); // Assuming the response is a single number between 1 and 288
 
               // Create a line chart using Chart.js
               const ctx = document.getElementById('myChart').getContext('2d');
-              const chart = new Chart(ctx, {
+
+              // Remove any existing chart to prevent duplicates
+              if (window.myChart) {
+                window.myChart.destroy();
+              }
+
+              window.myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                   labels: Array.from({ length: 288 }, (_, i) => {
@@ -68,15 +71,6 @@
                     borderColor: 'rgba(120, 224, 143, 1)',
                     fill: false,
                     pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
-                  }, {
-                    label: 'Current Index',
-                    data: [{
-                      x: currentIndResponse - 1, // Subtract 1 to convert the index to zero-based array index
-                      y: parseFloat(pHResponseArray[currentIndResponse - 1]) // Convert pH value to a number
-                    }],
-                    type: 'scatter',
-                    backgroundColor: 'rgba(0, 77, 64, 1)', // Red color for the plotted dot
-                    pointRadius: 5
                   }]
                 },
                 options: {
@@ -103,18 +97,21 @@
                     }
                   },
                   plugins: {
-                    tooltip: {
-                      callbacks: {
-                        label: function(context) {
-                          var dataset = context.datasetIndex;
-                          var index = context.dataIndex;
-                          if (dataset === 0) {
-                            return "pH: " + context.raw;
-                          } else if (dataset === 1 && index === currentIndResponse - 1) {
-                            return "Current Index: " + context.raw;
-                          }
-                          return null;
-                        }
+                    afterDraw: function (chart) {
+                      const ctx = chart.ctx;
+                      const xAxis = chart.scales.x;
+                      const yAxis = chart.scales.y;
+                      const pointRadius = 5;
+
+                      if (currentIndResponse >= 1 && currentIndResponse <= 288) {
+                        const xValue = xAxis.getPixelForValue(currentIndResponse - 1);
+                        const yValue = yAxis.getPixelForValue(pHResponseArray[currentIndResponse - 1]);
+
+                        ctx.beginPath();
+                        ctx.arc(xValue, yValue, pointRadius, 0, 2 * Math.PI);
+                        ctx.fillStyle = 'rgba(255, 0, 0, 1)'; // Red color for the plotted dot
+                        ctx.fill();
+                        ctx.closePath();
                       }
                     }
                   }
