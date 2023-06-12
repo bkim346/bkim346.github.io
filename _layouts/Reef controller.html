@@ -46,10 +46,10 @@ function fetchDataAndRefreshChart() {
           const pHResponse = pHData.trim();
           const pHResponseArray = pHResponse.split(',');
 
-          const currentIndResponse = parseInt(currentIndData.trim()); // Assuming the response is a single number between 1 and 288
+          const currentIndResponse = parseInt(currentIndData[0].trim()); // Assuming the response is a single number between 1 and 288
           
           console.log('Current Ind X', currentIndData);
-          console.log('Current Ind X', currentIndResponse);
+          console.log('Current Ind parsed', currentIndResponse);
           console.log('Current Ind Y:', parseFloat(pHResponseArray[currentIndResponse - 1]));
 
           // Create a line chart using Chart.js
