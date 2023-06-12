@@ -41,13 +41,14 @@ function fetchDataAndRefreshChart() {
     .then(pHData => {
       // Fetch the current index data
       fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
-        .then(response => response.json())
-        .then(data => {
-          const currentIndResponse = parseInt(data[0]);
+        .then(response => response.text())
+        .then(currentIndResponse => {
+          currentIndResponse = parseInt(currentIndResponse);
+
           const pHResponse = pHData.trim();
           const pHResponseArray = pHResponse.split(',');
 
-          console.log("test",currentIndResponse);
+          console.log("test", currentIndResponse);
           // Create a line chart using Chart.js
           const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -70,18 +71,18 @@ function fetchDataAndRefreshChart() {
               }),
               datasets: [{
                 label: 'pH',
-                data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
+                data: pHResponseArray.map(Number),
                 borderColor: 'rgba(120, 224, 143, 1)',
                 fill: false,
-                pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+                pointBackgroundColor: 'rgba(120, 224, 143, 1)'
               }, {
                 label: 'Current Index',
                 data: [{
-                  x: currentIndResponse * 5, // Each point represents 5 minutes, so multiply by 5
+                  x: currentIndResponse * 12, // Multiply by 12 to convert to the correct index on the x-axis
                   y: parseFloat(pHResponseArray[currentIndResponse])
                 }],
                 type: 'scatter',
-                backgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
+                backgroundColor: 'rgba(255, 0, 0, 1)',
                 pointRadius: 5
               }]
             },
@@ -96,7 +97,7 @@ function fetchDataAndRefreshChart() {
                   ticks: {
                     maxRotation: 0,
                     autoSkip: true,
-                    maxTicksLimit: 6 // Maximum number of x-axis ticks to display
+                    maxTicksLimit: 6
                   }
                 },
                 y: {
@@ -113,6 +114,7 @@ function fetchDataAndRefreshChart() {
         });
     });
 }
+
 
 
     // Fetch data and refresh chart initially
