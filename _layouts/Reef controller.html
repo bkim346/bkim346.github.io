@@ -32,7 +32,7 @@
   {%- include footer.html %}
 
   <script>
-   let myChart; // Variable to store the chart instance
+  let myChart; // Variable to store the chart instance
 
 function fetchDataAndRefreshChart() {
   // Retrieve the response data from the API endpoint
@@ -73,6 +73,15 @@ function fetchDataAndRefreshChart() {
                 borderColor: 'rgba(120, 224, 143, 1)',
                 fill: false,
                 pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+              }, {
+                label: 'Current Index',
+                data: [{
+                  x: currentIndResponse - 1,
+                  y: parseFloat(pHResponseArray[currentIndResponse - 1])
+                }],
+                type: 'scatter',
+                backgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
+                pointRadius: 5
               }]
             },
             options: {
@@ -96,25 +105,6 @@ function fetchDataAndRefreshChart() {
                   },
                   min: 7.9,
                   max: 8.5
-                }
-              },
-              plugins: {
-                afterDraw: function (chart) {
-                  const ctx = chart.ctx;
-                  const xAxis = chart.scales.x;
-                  const yAxis = chart.scales.y;
-                  const pointRadius = 5;
-
-                  if (currentIndResponse >= 1 && currentIndResponse <= 288) {
-                    const xValue = xAxis.getPixelForValue(currentIndResponse - 1);
-                    const yValue = yAxis.getPixelForValue(pHResponseArray[currentIndResponse - 1]);
-
-                    ctx.beginPath();
-                    ctx.arc(xValue, yValue, pointRadius, 0, 2 * Math.PI);
-                    ctx.fillStyle = 'rgba(255, 0, 0, 1)'; // Red color for the plotted dot
-                    ctx.fill();
-                    ctx.closePath();
-                  }
                 }
               }
             }
