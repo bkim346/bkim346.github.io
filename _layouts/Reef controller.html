@@ -44,13 +44,9 @@
             .then(response => response.json())
             .then(data => {
               const currentIndResponse = parseInt(data[0]);
-              console.log("currentIndResponse:", currentIndResponse);
 
               const pHResponse = pHData.trim();
               const pHResponseArray = pHResponse.split(',');
-
-              console.log('Current Ind parsed', currentIndResponse);
-              console.log('Current Ind Y:', parseFloat(pHResponseArray[currentIndResponse - 1]));
 
               // Create a line chart using Chart.js
               const ctx = document.getElementById('myChart').getContext('2d');
@@ -80,8 +76,8 @@
                   }, {
                     label: 'Current Index',
                     data: [{
-                      x: currentIndResponse - 1,
-                      y: parseFloat(pHResponseArray[currentIndResponse - 1])
+                      x: currentIndResponse ,
+                      y: parseFloat(pHResponseArray[currentIndResponse])
                     }],
                     type: 'scatter',
                     backgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
