@@ -46,6 +46,9 @@
 
               const currentIndResponse = currentIndData.trim(); // Assuming the response is a single number between 1 and 288
 
+              console.log('pH Response Array:', pHResponseArray);
+              console.log('Current Ind Response:', currentIndResponse);
+
               // Create a line chart using Chart.js
               const ctx = document.getElementById('myChart').getContext('2d');
               const chart = new Chart(ctx, {
