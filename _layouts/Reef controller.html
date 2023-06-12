@@ -2,26 +2,21 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
-
 <head>
   {%- if page.redirect -%}
   <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
   {%- endif -%}
   {% include head.html %}
   <title>Reef Live Data</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 </head>
 
 <!-- Body -->
-
-<body
-  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
-
+<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
   <!-- Header -->
   {%- include header.html %}
-
   <!-- Content -->
   <div class="container mt-5">
     <h1>Reef Live Data</h1>
@@ -29,10 +24,9 @@
       <canvas id="myChart"></canvas>
     </div>
   </div>
-
   <!-- Footer -->
   {%- include footer.html %}
-  
+
   <script>
     let myChart; // Variable to store the chart instance
 
@@ -119,7 +113,7 @@
                     },
                     title: {
                       display: true,
-                      text: ` Current Ph: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
+                      text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
                       position: 'top',
                       align: 'start',
                       padding: {
@@ -139,9 +133,7 @@
 
     // Refresh chart every minute
     setInterval(fetchDataAndRefreshChart, 300000);
-
-  </script
-  
+  </script>
 </body>
 
 </html>
