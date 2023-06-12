@@ -87,94 +87,22 @@
                       maxRotation: 0,
                       autoSkip: true,
                       maxTicksLimit: 6 // Maximum number of x-axis ticks to display
-                   
-<!DOCTYPE html>
-<html lang="{{ site.lang }}">
-
-<!-- Head -->
-
-<head>
-  {%- if page.redirect -%}
-  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
-  {%- endif -%}
-  {% include head.html %}
-  <title>Reef Live Data</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-</head>
-
-<!-- Body -->
-
-<body
-  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
-
-  <!-- Header -->
-  {%- include header.html %}
-
-  <!-- Content -->
-  <div class="container mt-5">
-    <h1>Reef Live Data</h1>
-    <div style="margin: 0 auto; background-color: white;">
-      <canvas id="myChart"></canvas>
-    </div>
-  </div>
-
-  <!-- Footer -->
-  {%- include footer.html %}
-
-  <script>
-    // Retrieve the response data from the API endpoint
-    fetch('https://reef-controller.duckdns.org/api/messages/pH')
-      .then(response => response.text())
-      .then(pHData => {
-        // Fetch the current index data
-        fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
-          .then(response => response.text())
-          .then(currentIndData => {
-            const pHResponse = pHData.trim();
-            const pHResponseArray = pHResponse.split(',');
-
-            const currentIndResponse = currentIndData.trim(); // Assuming the response is a single number between 1 and 288
-
-            // Create a line chart using Chart.js
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const chart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: Array.from({ length: 288 }, (_, i) => {
-                  const hour = Math.floor(i / 12);
-                  if (i % 12 === 0) {
-                    return `${hour}:00`;
-                  } else {
-                    return '';
-                  }
-                }),
-                datasets: [{
-                  label: 'pH',
-                  data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
-                  borderColor: 'rgba(120, 224, 143, 1)',
-                  fill: false,
-                  pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
-                }, {
-                  label: 'Current Index',
-                  data: [{
-                    x: currentIndResponse - 1, // Subtract 1 to convert the index to zero-based array index
-                    y: parseFloat(pHResponseArray[currentIndResponse - 1]) // Convert pH value to a number
-                  }],
-                  type: 'scatter',
-                  backgroundColor: 'rgba(0, 77, 64, 1)', // Red color for the plotted dot
-                  pointRadius: 5
-                }]
-              },
-              options: {
-                responsive: true,
-                scales: {
-                  x: {
+                    }
+                  },
+                  y: {
                     title: {
                       display: true,
-                      text: 'Time (hours)'
+                      text: 'pH'
                     },
-                    ticks: {
-                      maxRotation: 0,
-                      autoSkip: true,
-                      maxTicksLimit: 6 // Maximum number of x-axis ticks to display
-                   
+                    min: 7.9,
+                    max: 8.5
+                  }
+                },
+              }
+            });
+          });
+      });
+  </script>
+</body>
+
+</html>
