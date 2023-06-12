@@ -32,94 +32,96 @@
   {%- include footer.html %}
 
   <script>
-    function fetchDataAndRefreshChart() {
-      // Retrieve the response data from the API endpoint
-      fetch('https://reef-controller.duckdns.org/api/messages/pH')
+   let myChart; // Variable to store the chart instance
+
+function fetchDataAndRefreshChart() {
+  // Retrieve the response data from the API endpoint
+  fetch('https://reef-controller.duckdns.org/api/messages/pH')
+    .then(response => response.text())
+    .then(pHData => {
+      // Fetch the current index data
+      fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
         .then(response => response.text())
-        .then(pHData => {
-          // Fetch the current index data
-          fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
-            .then(response => response.text())
-            .then(currentIndData => {
-              const pHResponse = pHData.trim();
-              const pHResponseArray = pHResponse.split(',');
+        .then(currentIndData => {
+          const pHResponse = pHData.trim();
+          const pHResponseArray = pHResponse.split(',');
 
-              const currentIndResponse = parseInt(currentIndData.trim()); // Assuming the response is a single number between 1 and 288
+          const currentIndResponse = parseInt(currentIndData.trim()); // Assuming the response is a single number between 1 and 288
 
-              // Create a line chart using Chart.js
-              const ctx = document.getElementById('myChart').getContext('2d');
+          // Create a line chart using Chart.js
+          const ctx = document.getElementById('myChart').getContext('2d');
 
-              // Remove any existing chart to prevent duplicates
-              if (window.myChart) {
-                window.myChart.destroy();
-              }
+          // Check if the chart instance exists and destroy it
+          if (myChart) {
+            myChart.destroy();
+          }
 
-              window.myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: Array.from({ length: 288 }, (_, i) => {
-                    const hour = Math.floor(i / 12);
-                    if (i % 12 === 0) {
-                      return `${hour}:00`;
-                    } else {
-                      return '';
-                    }
-                  }),
-                  datasets: [{
-                    label: 'pH',
-                    data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
-                    borderColor: 'rgba(120, 224, 143, 1)',
-                    fill: false,
-                    pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
-                  }]
-                },
-                options: {
-                  responsive: true,
-                  scales: {
-                    x: {
-                      title: {
-                        display: true,
-                        text: 'Time (hours)'
-                      },
-                      ticks: {
-                        maxRotation: 0,
-                        autoSkip: true,
-                        maxTicksLimit: 6 // Maximum number of x-axis ticks to display
-                      }
-                    },
-                    y: {
-                      title: {
-                        display: true,
-                        text: 'pH'
-                      },
-                      min: 7.9,
-                      max: 8.5
-                    }
+          myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: Array.from({ length: 288 }, (_, i) => {
+                const hour = Math.floor(i / 12);
+                if (i % 12 === 0) {
+                  return `${hour}:00`;
+                } else {
+                  return '';
+                }
+              }),
+              datasets: [{
+                label: 'pH',
+                data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
+                borderColor: 'rgba(120, 224, 143, 1)',
+                fill: false,
+                pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Time (hours)'
                   },
-                  plugins: {
-                    afterDraw: function (chart) {
-                      const ctx = chart.ctx;
-                      const xAxis = chart.scales.x;
-                      const yAxis = chart.scales.y;
-                      const pointRadius = 5;
+                  ticks: {
+                    maxRotation: 0,
+                    autoSkip: true,
+                    maxTicksLimit: 6 // Maximum number of x-axis ticks to display
+                  }
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: 'pH'
+                  },
+                  min: 7.9,
+                  max: 8.5
+                }
+              },
+              plugins: {
+                afterDraw: function (chart) {
+                  const ctx = chart.ctx;
+                  const xAxis = chart.scales.x;
+                  const yAxis = chart.scales.y;
+                  const pointRadius = 5;
 
-                      if (currentIndResponse >= 1 && currentIndResponse <= 288) {
-                        const xValue = xAxis.getPixelForValue(currentIndResponse - 1);
-                        const yValue = yAxis.getPixelForValue(pHResponseArray[currentIndResponse - 1]);
+                  if (currentIndResponse >= 1 && currentIndResponse <= 288) {
+                    const xValue = xAxis.getPixelForValue(currentIndResponse - 1);
+                    const yValue = yAxis.getPixelForValue(pHResponseArray[currentIndResponse - 1]);
 
-                        ctx.beginPath();
-                        ctx.arc(xValue, yValue, pointRadius, 0, 2 * Math.PI);
-                        ctx.fillStyle = 'rgba(255, 0, 0, 1)'; // Red color for the plotted dot
-                        ctx.fill();
-                        ctx.closePath();
-                      }
-                    }
+                    ctx.beginPath();
+                    ctx.arc(xValue, yValue, pointRadius, 0, 2 * Math.PI);
+                    ctx.fillStyle = 'rgba(255, 0, 0, 1)'; // Red color for the plotted dot
+                    ctx.fill();
+                    ctx.closePath();
                   }
                 }
-              });
-            });
+              }
+            }
+          });
         });
-    }
+    });
+}
 
     // Fetch data and refresh chart initially
     fetchDataAndRefreshChart();
