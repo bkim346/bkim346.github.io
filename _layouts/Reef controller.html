@@ -30,7 +30,7 @@
 
   <!-- Footer -->
   {%- include footer.html %}
-
+{% include scripts/bootstrap.html %}
   <script>
     let myChart; // Variable to store the chart instance
 
@@ -139,9 +139,6 @@
     setInterval(fetchDataAndRefreshChart, 300000);
 
   </script>
-
-
-{% include scripts/bootstrap.html %}
 </body>
 
 </html>
