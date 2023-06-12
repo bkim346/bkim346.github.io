@@ -28,7 +28,6 @@
   <!-- Footer -->
   {%- include footer.html %}
 
-  {% include misc.html %}
   <script>
     let myChart; // Variable to store the chart instance
 
@@ -136,6 +135,8 @@
     // Refresh chart every minute
     setInterval(fetchDataAndRefreshChart, 300000);
   </script>
+  
+  {% include misc.html %}
 </body>
 
 </html>
