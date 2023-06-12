@@ -47,6 +47,7 @@ function fetchDataAndRefreshChart() {
           const pHResponse = pHData.trim();
           const pHResponseArray = pHResponse.split(',');
 
+          Console.log("test",currentIndResponse);
           // Create a line chart using Chart.js
           const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -76,7 +77,7 @@ function fetchDataAndRefreshChart() {
               }, {
                 label: 'Current Index',
                 data: [{
-                  x: parseInt(currentIndResponse) * 12,
+                  x: currentIndResponse * 5, // Each point represents 5 minutes, so multiply by 5
                   y: parseFloat(pHResponseArray[currentIndResponse])
                 }],
                 type: 'scatter',
