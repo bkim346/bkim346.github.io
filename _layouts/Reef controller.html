@@ -41,7 +41,7 @@ function fetchDataAndRefreshChart() {
     .then(pHData => {
       // Fetch the current index data
       fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
-        .then(response => response.text())
+        .then(response => response.json())
         .then(currentIndResponse => {
           currentIndResponse = parseInt(currentIndResponse);
 
