@@ -63,8 +63,16 @@
                     label: 'pH',
                     data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
                     borderColor: 'rgba(120, 224, 143, 1)',
-                    fill: false,
-                    pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+                    fill: false
+                  }, {
+                    label: 'Current Index',
+                    data: [{
+                      x: currentIndResponse - 1, // Subtract 1 to convert the index to zero-based array index
+                      y: parseFloat(pHResponseArray[currentIndResponse - 1]) // Convert pH value to a number
+                    }],
+                    type: 'scatter',
+                    backgroundColor: 'rgba(0, 77, 64, 1)', // Red color for the plotted dot
+                    pointRadius: 5
                   }]
                 },
                 options: {
@@ -78,46 +86,4 @@
                       ticks: {
                         maxRotation: 0,
                         autoSkip: true,
-                        maxTicksLimit: 6 // Maximum number of x-axis ticks to display
-                      }
-                    },
-                    y: {
-                      title: {
-                        display: true,
-                        text: 'pH'
-                      },
-                      min: 7.9,
-                      max: 8.5
-                    }
-                  },
-                  plugins: {
-                    tooltip: {
-                      callbacks: {
-                        label: function(context) {
-                          var index = context.dataIndex;
-                          var dataset = context.datasetIndex;
-                          if (dataset === 0) {
-                            return "pH: " + context.raw;
-                          } else if (dataset === 1 && index === currentIndResponse - 1) {
-                            return "Current Index: " + context.raw;
-                          }
-                          return null;
-                        }
-                      }
-                    }
-                  }
-                }
-              });
-            });
-        });
-    }
-
-    // Fetch data and refresh chart initially
-    fetchDataAndRefreshChart();
-
-    // Refresh chart every minute
-    setInterval(fetchDataAndRefreshChart, 60000);
-  </script>
-</body>
-
-</html>
+                        maxTicksLimit: 6 // Maximum number of
