@@ -148,9 +148,7 @@
                         }
                       },
                       plugins: {
-                        legend: {
-                          display: false // Hide the legend
-                        },
+                        // Other plugins...
                         title: {
                           display: true,
                           text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
@@ -161,17 +159,17 @@
                             bottom: 10,
                           }
                         },
-                          currentTemp: {
-    display: true,
-    text: `Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
-    position: 'top',
-    align: 'end',
-    padding: {
-      top: 5,
-      bottom: 10,
-    }
+                        currentTemp: {
+                          display: true,
+                          text: `Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
+                          position: 'top',
+                          align: 'end',
+                          padding: {
+                            top: 5,
+                            bottom: 10,
+                          }
+                        }
                       }
-                    }
                   });
                 });
             });
