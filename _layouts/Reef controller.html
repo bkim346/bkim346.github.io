@@ -163,7 +163,7 @@
                             }
                           },
                           currentTemp: {
-                            beforeDraw: (chart) => {
+                            afterDraw: (chart) => {
                               const ctx = chart.ctx;
                               const temperatureData = chart.data.datasets.find(dataset => dataset.label === 'Temperature');
                               const currentTemperature = temperatureData.data[currentIndResponse].y.toFixed(2);
