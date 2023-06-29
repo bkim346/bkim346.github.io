@@ -11,7 +11,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@{{ site.bootstrap.version }}/dist/js/bootstrap.bundle.min.js" integrity="{{ site.bootstrap.integrity.js }}" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@{{ site.mdb.version }}/js/mdb.min.js" integrity="{{ site.mdb.integrity.js }}" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 </head>
 
 <!-- Body -->
@@ -27,110 +27,114 @@
   </div>
   <!-- Footer -->
   {%- include footer.html %}
-
+  
   {% include scripts/misc.html %}
   <script>
     let myChart; // Variable to store the chart instance
 
     function fetchDataAndRefreshChart() {
-      // Fetch the pH data from the API endpoint
+      // Retrieve the response data from the API endpoint
       fetch('https://reef-controller.duckdns.org/api/messages/pH')
         .then(response => response.text())
         .then(pHData => {
-          // Fetch the temperature data from the API endpoint
-          fetch('https://reef-controller.duckdns.org/api/messages/Temp')
+          // Fetch the current index data
+          fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
             .then(response => response.json())
             .then(data => {
-              const matrixData = data.matrix;
+              const currentIndResponse = parseInt(data[0]);
+              const pHResponse = pHData.trim();
+              const pHResponseArray = pHResponse.split(',');
 
-              // Create the chart data
-              const chartData = {
-                labels: Array.from({ length: 288 }, (_, i) => {
-                  const hour = Math.floor(i / 12);
-                  const minute = (i % 12) * 5;
-                  if (i === 288) {
-                    return '24:00';
-                  } else {
-                    return `${hour}:${minute.toString().padStart(2, '0')}`;
-                  }
-                }),
-                datasets: [
-                  {
-                    label: 'pH',
-                    data: pHData.trim().split(',').map(parseFloat),
-                    type: 'scatter',
-                    backgroundColor: 'rgba(0, 100, 255, 1)', // Blue color for the plotted dot
-                    pointRadius: 5
-                  },
-                  {
-                    label: 'Temperature',
-                    data: matrixData,
-                    type: 'line',
-                    backgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
-                    borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
-                    fill: false,
-                    pointRadius: 0, // Hide the data points for temperature
-                    yAxisID: 'temperature-y-axis' // Assign the temperature dataset to the right y axis
-                  }
-                ]
-              };
+              // Create a 288-long array filled with NaN
+              const dataArray = Array(288).fill(NaN);
+              // Replace the value corresponding to the current index with the pH value
+              dataArray[currentIndResponse] = parseFloat(pHResponseArray[currentIndResponse]);
 
-              // Create the chart options
-              const chartOptions = {
-                responsive: true,
-                scales: {
-                  xAxes: [
+              // Create a line chart using Chart.js
+              const ctx = document.getElementById('myChart').getContext('2d');
+
+              // Check if the chart instance exists and destroy it
+              if (myChart) {
+                myChart.destroy();
+              }
+
+              myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: Array.from({ length: 288 }, (_, i) => {
+                    const hour = Math.floor(i / 12);
+                    const minute = (i % 12) * 5;
+                    if (i === 288) {
+                      return '24:00';
+                    } else {
+                      return `${hour}:${minute.toString().padStart(2, '0')}`;
+                    }
+                  }),
+                  datasets: [{
+                      label: 'pH',
+                      data: dataArray,
+                      type: 'scatter',
+                      backgroundColor: 'rgba(0, 100, 255, 1)', // Blue color for the plotted dot
+                      pointRadius: 5
+                    },
                     {
+                      label: 'pH',
+                      data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
+                      borderColor: 'rgba(120, 224, 143, 1)',
+                      fill: false,
+                      pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+                    },
+                    {
+                      label: 'Temperature',
+                      data: tempDataArray,
+                      type: 'line',
+                      backgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
+                      borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
+                      fill: false,
+                      pointRadius: 0, // Hide the data points for temperature
+                      yAxisID: 'temperature-y-axis' // Assign the temperature dataset to the right y axis
+                    }
+                  ]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    x: {
+                      title: {
+                        display: true,
+                        text: 'Time (hours)'
+                      },
                       ticks: {
                         maxRotation: 0,
                         autoSkip: true,
                         maxTicksLimit: 6 // Maximum number of x-axis ticks to display
                       }
-                    }
-                  ],
-                  yAxes: [
-                    {
-                      id: 'pH-y-axis',
-                      position: 'left',
-                      ticks: {
-                        beginAtZero: true,
-                        suggestedMin: 7.8,
-                        suggestedMax: 8.5
-                      },
-                      scaleLabel: {
-                        display: true,
-                        labelString: 'pH'
-                      }
                     },
-                    {
-                      id: 'temperature-y-axis',
-                      position: 'right',
-                      ticks: {
-                        suggestedMin: 74,
-                        suggestedMax: 82
-                      },
-                      scaleLabel: {
+                    y: {
+                      title: {
                         display: true,
-                        labelString: 'Temperature (°F)'
+                        text: 'pH'
+                      },
+                      min: 8.0,
+                      max: 8.6
+                    }
+                  },
+                  plugins: {
+                    legend: {
+                      display: false // Hide the legend
+                    },
+                    title: {
+                      display: true,
+                      text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
+                      position: 'top',
+                      align: 'start',
+                      padding: {
+                        top: 5,
+                        bottom: 10,
                       }
                     }
-                  ]
+                  }
                 }
-              };
-
-              // Get the chart canvas element
-              const ctx = document.getElementById('myChart').getContext('2d');
-
-              // Destroy the previous chart instance if it exists
-              if (myChart) {
-                myChart.destroy();
-              }
-
-              // Create the new chart instance
-              myChart = new Chart(ctx, {
-                type: 'line',
-                data: chartData,
-                options: chartOptions
               });
             });
         });
@@ -142,7 +146,7 @@
     // Refresh chart every minute
     setInterval(fetchDataAndRefreshChart, 60000);
   </script>
-
+  
 </body>
 
 </html>
