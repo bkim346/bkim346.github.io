@@ -54,6 +54,12 @@
               fetch('https://reef-controller.duckdns.org/api/messages/Temp')
                 .then(response => response.json())
                 .then(tempData => {
+                  // Format temperature data as an array of objects with 'x' and 'y' properties
+                  const temperatureData = tempData.map((value, index) => ({
+                    x: index,
+                    y: value
+                  }));
+
                   // Create a line chart using Chart.js
                   const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -91,21 +97,11 @@
                         },
                         {
                           label: 'Temperature',
-                          data: tempData, // Temperature data
+                          data: temperatureData, // Temperature data
                           borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
                           fill: false,
                           pointBackgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
                           yAxisID: 'temperature-y-axis' // Assign to the temperature y-axis
-                        },
-                        {
-                          label: 'Temperature (Current Index)',
-                          data: [{
-                            x: currentIndResponse,
-                            y: tempData[currentIndResponse]
-                          }],
-                          type: 'scatter',
-                          backgroundColor: 'rgba(255, 165, 0, 1)', // Orange color for the plotted dot
-                          pointRadius: 5
                         }
                       ]
                     },
@@ -137,8 +133,8 @@
                             display: true,
                             text: 'Temperature (°F)'
                           },
-                          suggestedMin: 74,
-                          suggestedMax: 82
+                          min: 74,
+                          max: 82
                         }
                       },
                       plugins: {
