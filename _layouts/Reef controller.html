@@ -1,43 +1,25 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang }}">
-
-<!-- Head -->
 <head>
-  {%- if page.redirect -%}
-  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
-  {%- endif -%}
-  {% include head.html %}
-  <title>Reef Live Data</title>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@{{ site.bootstrap.version }}/dist/js/bootstrap.bundle.min.js" integrity="{{ site.bootstrap.integrity.js }}" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@{{ site.mdb.version }}/js/mdb.min.js" integrity="{{ site.mdb.integrity.js }}" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <!-- Head content -->
 </head>
-
-<!-- Body -->
-<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
-  <!-- Header -->
-  {%- include header.html %}
-  <!-- Content -->
+<body>
+  <!-- Body content -->
   <div class="container mt-5">
     <h1>Reef Live Data</h1>
     <div style="margin: 0 auto; background-color: white;">
       <canvas id="myChart"></canvas>
     </div>
   </div>
-  <!-- Footer -->
-  {%- include footer.html %}
   
-  {% include scripts/misc.html %}
+  <!-- Additional scripts -->
   <script>
     let myChart; // Variable to store the chart instance
 
     function fetchDataAndRefreshChart() {
-      // Retrieve the response data from the API endpoint
       fetch('https://reef-controller.duckdns.org/api/messages/pH')
         .then(response => response.text())
         .then(pHData => {
-          // Fetch the current index data
           fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
             .then(response => response.json())
             .then(data => {
@@ -45,98 +27,60 @@
               const pHResponse = pHData.trim();
               const pHResponseArray = pHResponse.split(',');
 
-              // Create a 288-long array filled with NaN
-              const dataArray = Array(288).fill(NaN);
-              // Replace the value corresponding to the current index with the pH value
-              dataArray[currentIndResponse] = parseFloat(pHResponseArray[currentIndResponse]);
+              // Fetch the temperature data from the specified URL
+              fetch('https://reef-controller.duckdns.org/api/messages/Temp')
+                .then(response => response.json())
+                .then(matrixData => {
+                  const temperatureData = matrixData.map(entry => entry.temperature);
 
-              // Create a line chart using Chart.js
-              const ctx = document.getElementById('myChart').getContext('2d');
+                  const ctx = document.getElementById('myChart').getContext('2d');
 
-              // Check if the chart instance exists and destroy it
-              if (myChart) {
-                myChart.destroy();
-              }
-
-              myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: Array.from({ length: 288 }, (_, i) => {
-                    const hour = Math.floor(i / 12);
-                    const minute = (i % 12) * 5;
-                    if (i === 288) {
-                      return '24:00';
-                    } else {
-                      return `${hour}:${minute.toString().padStart(2, '0')}`;
-                    }
-                  }),
-                  datasets: [{
-                      label: 'pH',
-                      data: dataArray,
-                      type: 'scatter',
-                      backgroundColor: 'rgba(0, 100, 255, 1)', // Red color for the plotted dot
-                      pointRadius: 5
-                    },
-                    {
-                      label: 'pH',
-                      data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
-                      borderColor: 'rgba(120, 224, 143, 1)',
-                      fill: false,
-                      pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
-                    }
-                  ]
-                },
-                options: {
-                  responsive: true,
-                  scales: {
-                    x: {
-                      title: {
-                        display: true,
-                        text: 'Time (hours)'
-                      },
-                      ticks: {
-                        maxRotation: 0,
-                        autoSkip: true,
-                        maxTicksLimit: 6 // Maximum number of x-axis ticks to display
-                      }
-                    },
-                    y: {
-                      title: {
-                        display: true,
-                        text: 'pH'
-                      },
-                      min: 8.0,
-                      max: 8.6
-                    }
-                  },
-                  plugins: {
-                    legend: {
-                      display: false // Hide the legend
-                    },
-                    title: {
-                      display: true,
-                      text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
-                      position: 'top',
-                      align: 'start',
-                      padding: {
-                        top: 5,
-                        bottom: 10,
-                      }
-                    }
+                  if (myChart) {
+                    myChart.destroy();
                   }
-                }
-              });
+
+                  myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                      labels: Array.from({ length: 288 }, (_, i) => {
+                        const hour = Math.floor(i / 12);
+                        const minute = (i % 12) * 5;
+                        if (i === 288) {
+                          return '24:00';
+                        } else {
+                          return `${hour}:${minute.toString().padStart(2, '0')}`;
+                        }
+                      }),
+                      datasets: [
+                        {
+                          label: 'pH',
+                          data: pHResponseArray.map(Number),
+                          borderColor: 'rgba(120, 224, 143, 1)',
+                          fill: false,
+                          pointBackgroundColor: 'rgba(120, 224, 143, 1)'
+                        },
+                        {
+                          label: 'Temperature',
+                          data: temperatureData,
+                          borderColor: 'rgba(255, 0, 0, 1)',
+                          fill: false,
+                          pointRadius: 0,
+                          yAxisID: 'temperature-y-axis'
+                        }
+                      ]
+                    },
+                    options: {
+                      // Chart options
+                    }
+                  });
+                });
             });
         });
     }
 
-    // Fetch data and refresh chart initially
     fetchDataAndRefreshChart();
 
-    // Refresh chart every minute
     setInterval(fetchDataAndRefreshChart, 60000);
   </script>
-  
 </body>
-
 </html>
