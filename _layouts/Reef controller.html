@@ -27,7 +27,7 @@
   </div>
   <!-- Footer -->
   {%- include footer.html %}
-  
+
   {% include scripts/misc.html %}
   <script>
     let myChart; // Variable to store the chart instance
@@ -76,7 +76,7 @@
                       }),
                       datasets: [
                         {
-                          label: 'pH',
+                          label: 'pH (Current)',
                           data: dataArray,
                           type: 'scatter',
                           backgroundColor: 'rgba(0, 100, 255, 1)', // Red color for the plotted dot
@@ -159,7 +159,7 @@
     // Refresh chart every minute
     setInterval(fetchDataAndRefreshChart, 60000);
   </script>
-  
+
 </body>
 
 </html>
