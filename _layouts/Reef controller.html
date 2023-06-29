@@ -102,6 +102,16 @@
                           fill: false,
                           pointBackgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
                           yAxisID: 'temperature-y-axis' // Assign to the temperature y-axis
+                        },
+                        {
+                          label: 'Temperature (Current Index)',
+                          data: [{
+                            x: currentIndResponse,
+                            y: tempData[currentIndResponse]
+                          }],
+                          type: 'scatter',
+                          backgroundColor: 'rgba(255, 165, 0, 1)', // Orange color for the plotted dot
+                          pointRadius: 5
                         }
                       ]
                     },
