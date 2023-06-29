@@ -153,27 +153,13 @@
                         },
                           title: {
                             display: true,
-                            text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
+                            text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)} | Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
                             position: 'top',
                             align: 'start',
                             padding: {
                               top: 5,
                               left: 10,
                               bottom: 10,
-                            }
-                          },
-                          currentTemp: {
-                            afterDraw: (chart) => {
-                              const ctx = chart.ctx;
-                              const temperatureData = chart.data.datasets.find(dataset => dataset.label === 'Temperature');
-                              const currentTemperature = temperatureData.data[currentIndResponse].y.toFixed(2);
-                              ctx.save();
-                              ctx.textAlign = 'end';
-                              ctx.textBaseline = 'top';
-                              ctx.font = '14px Arial';
-                              ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-                              ctx.fillText(`Current Temp: ${currentTemperature}°F`, chart.width - 10, 10);
-                              ctx.restore();
                             }
                           }
                         }
