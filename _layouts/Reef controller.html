@@ -33,74 +33,106 @@
     let myChart; // Variable to store the chart instance
 
     function fetchDataAndRefreshChart() {
-      // Fetch the data from the API endpoint
-      fetch('https://reef-controller.duckdns.org/api/messages/Temp')
-        .then(response => response.json())
-        .then(data => {
-          const matrixData = data.matrix;
+      // Fetch the pH data from the API endpoint
+      fetch('https://reef-controller.duckdns.org/api/messages/pH')
+        .then(response => response.text())
+        .then(pHData => {
+          // Fetch the temperature data from the API endpoint
+          fetch('https://reef-controller.duckdns.org/api/messages/Temp')
+            .then(response => response.json())
+            .then(data => {
+              const matrixData = data.matrix;
 
-          // Create a line chart using Chart.js
-          const ctx = document.getElementById('myChart').getContext('2d');
-
-          // Check if the chart instance exists and destroy it
-          if (myChart) {
-            myChart.destroy();
-          }
-
-          myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              // Your chart data configuration here
-            },
-            options: {
-              responsive: true,
-              scales: {
-                x: {
-                  title: {
-                    display: true,
-                    text: 'Time (hours)'
-                  },
-                  ticks: {
-                    maxRotation: 0,
-                    autoSkip: true,
-                    maxTicksLimit: 6 // Maximum number of x-axis ticks to display
+              // Create the chart data
+              const chartData = {
+                labels: Array.from({ length: 288 }, (_, i) => {
+                  const hour = Math.floor(i / 12);
+                  const minute = (i % 12) * 5;
+                  if (i === 288) {
+                    return '24:00';
+                  } else {
+                    return `${hour}:${minute.toString().padStart(2, '0')}`;
                   }
-                },
-                y: {
-                  title: {
-                    display: true,
-                    text: 'pH'
+                }),
+                datasets: [
+                  {
+                    label: 'pH',
+                    data: pHData.trim().split(',').map(parseFloat),
+                    type: 'scatter',
+                    backgroundColor: 'rgba(0, 100, 255, 1)', // Blue color for the plotted dot
+                    pointRadius: 5
                   },
-                  min: 8.0,
-                  max: 8.6
-                },
-                temperature: {
-                  position: 'right',
-                  title: {
-                    display: true,
-                    text: 'Temperature'
-                  },
-                  min: 74,
-                  max: 82
-                }
-              },
-              plugins: {
-                legend: {
-                  display: false // Hide the legend
-                },
-                title: {
-                  display: true,
-                  text: 'Current pH',
-                  position: 'top',
-                  align: 'start',
-                  padding: {
-                    top: 5,
-                    bottom: 10
+                  {
+                    label: 'Temperature',
+                    data: matrixData,
+                    type: 'line',
+                    backgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
+                    borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
+                    fill: false,
+                    pointRadius: 0, // Hide the data points for temperature
+                    yAxisID: 'temperature-y-axis' // Assign the temperature dataset to the right y axis
                   }
+                ]
+              };
+
+              // Create the chart options
+              const chartOptions = {
+                responsive: true,
+                scales: {
+                  xAxes: [
+                    {
+                      ticks: {
+                        maxRotation: 0,
+                        autoSkip: true,
+                        maxTicksLimit: 6 // Maximum number of x-axis ticks to display
+                      }
+                    }
+                  ],
+                  yAxes: [
+                    {
+                      id: 'pH-y-axis',
+                      position: 'left',
+                      ticks: {
+                        beginAtZero: true,
+                        suggestedMin: 7.8,
+                        suggestedMax: 8.5
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'pH'
+                      }
+                    },
+                    {
+                      id: 'temperature-y-axis',
+                      position: 'right',
+                      ticks: {
+                        suggestedMin: 74,
+                        suggestedMax: 82
+                      },
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Temperature (°F)'
+                      }
+                    }
+                  ]
                 }
+              };
+
+              // Get the chart canvas element
+              const ctx = document.getElementById('myChart').getContext('2d');
+
+              // Destroy the previous chart instance if it exists
+              if (myChart) {
+                myChart.destroy();
               }
-            }
-          });
+
+              // Create the new chart instance
+              myChart = new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: chartOptions
+              });
+            });
         });
     }
 
@@ -110,6 +142,7 @@
     // Refresh chart every minute
     setInterval(fetchDataAndRefreshChart, 60000);
   </script>
+
 </body>
 
 </html>
