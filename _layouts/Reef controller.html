@@ -163,14 +163,17 @@
                             }
                           },
                           currentTemp: {
-                            display: true,
-                            text: `Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
-                            position: 'top',
-                            align: 'end',
-                            padding: {
-                              top: 5,
-                              right: 10,
-                              bottom: 10,
+                            beforeDraw: (chart) => {
+                              const ctx = chart.ctx;
+                              const temperatureData = chart.data.datasets.find(dataset => dataset.label === 'Temperature');
+                              const currentTemperature = temperatureData.data[currentIndResponse].y.toFixed(2);
+                              ctx.save();
+                              ctx.textAlign = 'end';
+                              ctx.textBaseline = 'top';
+                              ctx.font = '14px Arial';
+                              ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+                              ctx.fillText(`Current Temp: ${currentTemperature}°F`, chart.width - 10, 10);
+                              ctx.restore();
                             }
                           }
                         }
