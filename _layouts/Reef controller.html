@@ -50,99 +50,105 @@
               // Replace the value corresponding to the current index with the pH value
               dataArray[currentIndResponse] = parseFloat(pHResponseArray[currentIndResponse]);
 
-              // Create a line chart using Chart.js
-              const ctx = document.getElementById('myChart').getContext('2d');
+              // Fetch the temperature data
+              fetch('https://reef-controller.duckdns.org/api/messages/Temp')
+                .then(response => response.json())
+                .then(tempData => {
+                  // Create a line chart using Chart.js
+                  const ctx = document.getElementById('myChart').getContext('2d');
 
-              // Check if the chart instance exists and destroy it
-              if (myChart) {
-                myChart.destroy();
-              }
-
-              myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: Array.from({ length: 288 }, (_, i) => {
-                    const hour = Math.floor(i / 12);
-                    const minute = (i % 12) * 5;
-                    if (i === 288) {
-                      return '24:00';
-                    } else {
-                      return `${hour}:${minute.toString().padStart(2, '0')}`;
-                    }
-                  }),
-                  datasets: [{
-                      label: 'pH',
-                      data: dataArray,
-                      type: 'scatter',
-                      backgroundColor: 'rgba(0, 100, 255, 1)', // Blue color for the plotted dot
-                      pointRadius: 5
-                    },
-                    {
-                      label: 'pH',
-                      data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
-                      borderColor: 'rgba(120, 224, 143, 1)',
-                      fill: false,
-                      pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
-                    },
-                    {
-                      label: 'Temperature',
-                      data: data, // Temperature data
-                      borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
-                      fill: false,
-                      pointBackgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
-                      yAxisID: 'temperature-y-axis' // Assign to the temperature y-axis
-                    }
-                  ]
-                },
-                options: {
-                  responsive: true,
-                  scales: {
-                    x: {
-                      title: {
-                        display: true,
-                        text: 'Time (hours)'
-                      },
-                      ticks: {
-                        maxRotation: 0,
-                        autoSkip: true,
-                        maxTicksLimit: 6 // Maximum number of x-axis ticks to display
-                      }
-                    },
-                    y: {
-                      title: {
-                        display: true,
-                        text: 'pH'
-                      },
-                      min: 8.0,
-                      max: 8.6
-                    },
-                    'temperature-y-axis': {
-                      position: 'right',
-                      title: {
-                        display: true,
-                        text: 'Temperature (°F)'
-                      },
-                      suggestedMin: 74,
-                      suggestedMax: 82
-                    }
-                  },
-                  plugins: {
-                    legend: {
-                      display: false // Hide the legend
-                    },
-                    title: {
-                      display: true,
-                      text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
-                      position: 'top',
-                      align: 'start',
-                      padding: {
-                        top: 5,
-                        bottom: 10,
-                      }
-                    }
+                  // Check if the chart instance exists and destroy it
+                  if (myChart) {
+                    myChart.destroy();
                   }
-                }
-              });
+
+                  myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                      labels: Array.from({ length: 288 }, (_, i) => {
+                        const hour = Math.floor(i / 12);
+                        const minute = (i % 12) * 5;
+                        if (i === 288) {
+                          return '24:00';
+                        } else {
+                          return `${hour}:${minute.toString().padStart(2, '0')}`;
+                        }
+                      }),
+                      datasets: [
+                        {
+                          label: 'pH',
+                          data: dataArray,
+                          type: 'scatter',
+                          backgroundColor: 'rgba(0, 100, 255, 1)', // Red color for the plotted dot
+                          pointRadius: 5
+                        },
+                        {
+                          label: 'pH',
+                          data: pHResponseArray.map(Number), // Convert pHResponseArray to numbers
+                          borderColor: 'rgba(120, 224, 143, 1)',
+                          fill: false,
+                          pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+                        },
+                        {
+                          label: 'Temperature',
+                          data: tempData, // Temperature data
+                          borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
+                          fill: false,
+                          pointBackgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
+                          yAxisID: 'temperature-y-axis' // Assign to the temperature y-axis
+                        }
+                      ]
+                    },
+                    options: {
+                      responsive: true,
+                      scales: {
+                        x: {
+                          title: {
+                            display: true,
+                            text: 'Time (hours)'
+                          },
+                          ticks: {
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 6 // Maximum number of x-axis ticks to display
+                          }
+                        },
+                        y: {
+                          title: {
+                            display: true,
+                            text: 'pH'
+                          },
+                          min: 8.0,
+                          max: 8.6
+                        },
+                        'temperature-y-axis': {
+                          position: 'right',
+                          title: {
+                            display: true,
+                            text: 'Temperature (°F)'
+                          },
+                          suggestedMin: 74,
+                          suggestedMax: 82
+                        }
+                      },
+                      plugins: {
+                        legend: {
+                          display: false // Hide the legend
+                        },
+                        title: {
+                          display: true,
+                          text: `Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}`,
+                          position: 'top',
+                          align: 'start',
+                          padding: {
+                            top: 5,
+                            bottom: 10,
+                          }
+                        }
+                      }
+                    }
+                  });
+                });
             });
         });
     }
