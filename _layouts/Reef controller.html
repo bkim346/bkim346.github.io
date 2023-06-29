@@ -61,7 +61,7 @@
                   }));
               const dataArrayTemp = Array(288).fill(NaN);
               // Replace the value corresponding to the current index with the pH value
-              dataArrayTemp[currentIndResponse] = parseFloat(temperatureData[currentIndResponse]);
+              dataArrayTemp[currentIndResponse] = parseFloat(temperatureData[currentIndResponse].y);
                   // Create a line chart using Chart.js
                   const ctx = document.getElementById('myChart').getContext('2d');
 
