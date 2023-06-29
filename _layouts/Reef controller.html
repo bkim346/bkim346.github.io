@@ -59,7 +59,9 @@
                     x: index,
                     y: value
                   }));
-
+              const dataArrayTemp = Array(288).fill(NaN);
+              // Replace the value corresponding to the current index with the pH value
+              dataArrayTemp[currentIndResponse] = parseFloat(temperatureData[currentIndResponse]);
                   // Create a line chart using Chart.js
                   const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -105,10 +107,7 @@
                         },
                         {
                           label: 'Temperature (Current Index)',
-                          data: [{
-                            x: currentIndResponse,
-                            y: tempData[currentIndResponse]
-                          }],
+                          data: dataArrayTemp,
                           type: 'scatter',
                           yAxisID: 'temperature-y-axis', // Assign to the temperature y-axis
                           backgroundColor: 'rgba(255, 165, 0, 1)', // Orange color for the plotted dot
