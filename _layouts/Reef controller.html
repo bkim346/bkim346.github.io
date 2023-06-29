@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang }}">
+
+<!-- Head -->
 <head>
-  <!-- Head content -->
+  {%- if page.redirect -%}
+  <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
+  {%- endif -%}
+  {% include head.html %}
+  <title>Reef Live Data</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@{{ site.bootstrap.version }}/dist/js/bootstrap.bundle.min.js" integrity="{{ site.bootstrap.integrity.js }}" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@{{ site.mdb.version }}/js/mdb.min.js" integrity="{{ site.mdb.integrity.js }}" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 </head>
-<body>
-  <!-- Body content -->
+
+<!-- Body -->
+<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+  <!-- Header -->
+  {%- include header.html %}
+  <!-- Content -->
   <div class="container mt-5">
     <h1>Reef Live Data</h1>
     <div style="margin: 0 auto; background-color: white;">
       <canvas id="myChart"></canvas>
     </div>
   </div>
+  <!-- Footer -->
+  {%- include footer.html %}
   
-  <!-- Additional scripts -->
+  {% include scripts/misc.html %}
+
+  
   <script>
     let myChart; // Variable to store the chart instance
 
