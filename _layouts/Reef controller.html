@@ -74,7 +74,7 @@
                       label: 'pH',
                       data: dataArray,
                       type: 'scatter',
-                      backgroundColor: 'rgba(0, 100, 255, 1)', // Red color for the plotted dot
+                      backgroundColor: 'rgba(0, 100, 255, 1)', // Blue color for the plotted dot
                       pointRadius: 5
                     },
                     {
@@ -83,6 +83,14 @@
                       borderColor: 'rgba(120, 224, 143, 1)',
                       fill: false,
                       pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
+                    },
+                    {
+                      label: 'Temperature',
+                      data: data, // Temperature data
+                      borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
+                      fill: false,
+                      pointBackgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
+                      yAxisID: 'temperature-y-axis' // Assign to the temperature y-axis
                     }
                   ]
                 },
@@ -107,6 +115,15 @@
                       },
                       min: 8.0,
                       max: 8.6
+                    },
+                    'temperature-y-axis': {
+                      position: 'right',
+                      title: {
+                        display: true,
+                        text: 'Temperature (°F)'
+                      },
+                      suggestedMin: 74,
+                      suggestedMax: 82
                     }
                   },
                   plugins: {
