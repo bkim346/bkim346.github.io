@@ -54,6 +54,12 @@
               fetch('https://reef-controller.duckdns.org/api/messages/Temp')
                 .then(response => response.json())
                 .then(tempData => {
+                  // Format temperature data as an array of objects with 'x' and 'y' properties
+                  const temperatureData = tempData.map((value, index) => ({
+                    x: index,
+                    y: value
+                  }));
+
                   // Create a line chart using Chart.js
                   const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -76,7 +82,7 @@
                       }),
                       datasets: [
                         {
-                          label: 'pH (Current)',
+                          label: 'pH',
                           data: dataArray,
                           type: 'scatter',
                           backgroundColor: 'rgba(0, 100, 255, 1)', // Red color for the plotted dot
@@ -91,7 +97,7 @@
                         },
                         {
                           label: 'Temperature',
-                          data: tempData, // Temperature data
+                          data: temperatureData, // Temperature data
                           borderColor: 'rgba(255, 0, 0, 1)', // Red color for the temperature line
                           fill: false,
                           pointBackgroundColor: 'rgba(255, 0, 0, 1)', // Red color for the plotted dot
