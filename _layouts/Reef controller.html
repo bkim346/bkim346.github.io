@@ -127,11 +127,17 @@
                           title: {
                             display: true,
                             text: 'Time (hours)'
+                            font: {
+                              weight: 'bold' // Make the font bold
+                            }
                           },
                           ticks: {
                             maxRotation: 0,
                             autoSkip: true,
                             maxTicksLimit: 6 // Maximum number of x-axis ticks to display
+                            font: {
+                              weight: 'bold' // Make the font bold
+                            }
                           }
                         },
                         y: {
@@ -139,13 +145,18 @@
                             display: true,
                             text: 'pH',
                             color: '#78F48F'
+                            font: {
+                              weight: 'bold' // Make the font bold
+                            }
                           },
                           ticks: {
-                            color: '#78F48F'
+                            color: '#78F48F',
+                            font: {
+                              weight: 'bold' // Make the font bold
+                            }
                           },
                           min: 7.8,
                           max: 8.4,
-                          color: '#78F48F'
                         },
                         'temperature-y-axis': {
                           position: 'right',
@@ -153,13 +164,18 @@
                             display: true,
                             text: 'Temperature (°F)',
                             color: '#FF6A00'
+                            font: {
+                              weight: 'bold' // Make the font bold
+                            }
                           },
                           ticks: {
-                            color: '#FF6A00'
+                            color: '#FF6A00',
+                            font: {
+                              weight: 'bold' // Make the font bold
+                            }
                           },
                           min: 74,
                           max: 80,
-                          color: '#FF6A00'
                         }
                       },
                       plugins: {
