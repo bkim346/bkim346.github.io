@@ -83,8 +83,6 @@
                         const minute = (i % 12) * 5;
                         if (i === 0) {
                           return '0:00';
-                        } else if (i === 287) {
-                          return '24:00';
                         } else {
                           return `${hour}:${minute.toString().padStart(2, '0')}`;
                         }
