@@ -46,7 +46,7 @@
           fetch('https://reef-controller.duckdns.org/api/messages/Current_ind')
             .then(response => response.json())
             .then(data => {
-              const currentIndResponse = parseInt(data[0])-1;
+              const currentIndResponse = parseInt(data[0]);
               const pHResponse = pHData.trim();
               const pHResponseArray = pHResponse.split(',');
 
