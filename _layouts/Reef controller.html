@@ -2,6 +2,7 @@
 <html lang="{{ site.lang }}">
 
 <!-- Head -->
+
 <head>
   {%- if page.redirect -%}
   <meta http-equiv="refresh" content="3; url={{ site.baseurl }}/" />
@@ -9,13 +10,17 @@
   {% include head.html %}
   <title>Reef Live Data</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@{{ site.bootstrap.version }}/dist/js/bootstrap.bundle.min.js" integrity="{{ site.bootstrap.integrity.js }}" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@{{ site.mdb.version }}/js/mdb.min.js" integrity="{{ site.mdb.integrity.js }}" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@{{ site.bootstrap.version }}/dist/js/bootstrap.bundle.min.js"
+    integrity="{{ site.bootstrap.integrity.js }}" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@{{ site.mdb.version }}/js/mdb.min.js"
+    integrity="{{ site.mdb.integrity.js }}" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 </head>
 
 <!-- Body -->
-<body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
+
+<body
+  class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
   <!-- Header -->
   {%- include header.html %}
   <!-- Content -->
@@ -59,9 +64,9 @@
                     x: index,
                     y: value
                   }));
-              const dataArrayTemp = Array(288).fill(NaN);
-              // Replace the value corresponding to the current index with the pH value
-              dataArrayTemp[currentIndResponse] = parseFloat(temperatureData[currentIndResponse].y);
+                  const dataArrayTemp = Array(288).fill(NaN);
+                  // Replace the value corresponding to the current index with the pH value
+                  dataArrayTemp[currentIndResponse] = parseFloat(temperatureData[currentIndResponse].y);
                   // Create a line chart using Chart.js
                   const ctx = document.getElementById('myChart').getContext('2d');
 
@@ -76,7 +81,9 @@
                       labels: Array.from({ length: 288 }, (_, i) => {
                         const hour = Math.floor(i / 12);
                         const minute = (i % 12) * 5;
-                        if (i === 288) {
+                        if (i === 0) {
+                          return '0:00';
+                        } else if (i === 287) {
                           return '24:00';
                         } else {
                           return `${hour}:${minute.toString().padStart(2, '0')}`;
@@ -97,7 +104,7 @@
                           fill: false,
                           pointBackgroundColor: 'rgba(120, 224, 143, 1)' // Seafoam green color for the plotted dot
                         },
-                                                {
+                        {
                           label: 'Temperature (Current Index)',
                           data: dataArrayTemp,
                           type: 'scatter',
@@ -151,19 +158,19 @@
                         legend: {
                           display: false // Hide the legend
                         },
-                          title: {
-                            display: true,
-                            text: `  Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}                                                                                                                                                                                  Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
-                            position: 'top',
-                            align: 'start',
-                            padding: {
-                              top: 5,
-                              left: 10,
-                              bottom: 10,
-                            }
+                        title: {
+                          display: true,
+                          text: `  Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}                                                                                                                                                                                  Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
+                          position: 'top',
+                          align: 'start',
+                          padding: {
+                            top: 5,
+                            left: 10,
+                            bottom: 10,
                           }
                         }
                       }
+                    }
                   });
                 });
             });
