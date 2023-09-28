@@ -155,8 +155,10 @@
                               weight: 'bold' // Make the font bold
                             }
                           },
+                          stepSize: 0.1, // Set the step size to 1
+                          beginAtZero: false, // Remove this line if you don't want to force the axis to start at zero
                           min: 8.1,
-                          max: 8.5,
+                          max: 8.6,
                         },
                         'temperature-y-axis': {
                           position: 'right',
@@ -170,13 +172,14 @@
                           },
                           ticks: {
                             color: '#FF6A00',
-                            maxTicksLimit: 5, // Minimum number of x-axis ticks to display
                             font: {
                               weight: 'bold' // Make the font bold
-                            }
+                            },
                           },
-                          min: 80,
-                          max: 72,
+                          stepSize: 1, // Set the step size to 1
+                          beginAtZero: false, // Remove this line if you don't want to force the axis to start at zero
+                          min: 72,
+                          max: 80,
                         }
                       },
                       plugins: {
