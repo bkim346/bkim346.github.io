@@ -177,27 +177,29 @@
                           },
                           min: 72,
                           max: 80,
-                          stepSize: 2, // Set the step size to 1
-                        }
-                      },
-                      plugins: {
-                        legend: {
-                          display: false // Hide the legend
+                          callback: function (value, index, values) {
+                            // Display only values in 2-increment steps
+                            return index % 2 === 0 ? value : '';
+                          }
                         },
-                        title: {
-                          display: true,
-                          text: `  Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}                                                                                                                                                              Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
-                          position: 'top',
-                          align: 'start',
-                          padding: {
-                            top: 5,
-                            left: 10,
-                            bottom: 10,
+                        plugins: {
+                          legend: {
+                            display: false // Hide the legend
+                          },
+                          title: {
+                            display: true,
+                            text: `  Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}                                                                                                                                                              Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
+                            position: 'top',
+                            align: 'start',
+                            padding: {
+                              top: 5,
+                              left: 10,
+                              bottom: 10,
+                            }
                           }
                         }
                       }
-                    }
-                  });
+                    });
                 });
             });
         });
