@@ -155,7 +155,6 @@
                               weight: 'bold' // Make the font bold
                             }
                           },
-                          stepSize: 0.1, // Set the step size to 1
                           min: 8.1,
                           max: 8.6,
                         },
@@ -171,31 +170,33 @@
                           },
                           ticks: {
                             color: '#FF6A00',
+                            maxTicksLimit: 5, // Minimum number of x-axis ticks to display
                             font: {
                               weight: 'bold' // Make the font bold
                             }
                           },
                           min: 73,
-                          max: 80,
+                          max: 78,
+                        }
+                      },
+                      plugins: {
+                        legend: {
+                          display: false // Hide the legend
                         },
-                        plugins: {
-                          legend: {
-                            display: false // Hide the legend
-                          },
-                          title: {
-                            display: true,
-                            text: `  Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}                                                                                                                                                              Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
-                            position: 'top',
-                            align: 'start',
-                            padding: {
-                              top: 5,
-                              left: 10,
-                              bottom: 10,
-                            }
+                        title: {
+                          display: true,
+                          text: `  Current pH: ${parseFloat(pHResponseArray[currentIndResponse]).toFixed(2)}                                                                                                                                                              Current Temp: ${parseFloat(temperatureData[currentIndResponse].y).toFixed(2)}°F`,
+                          position: 'top',
+                          align: 'start',
+                          padding: {
+                            top: 5,
+                            left: 10,
+                            bottom: 10,
                           }
                         }
                       }
-                    });
+                    }
+                  });
                 });
             });
         });
