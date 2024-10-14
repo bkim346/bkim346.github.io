@@ -32,6 +32,7 @@
         - Study the 3rd order chemosensory neurons and see how taste and smell information is integrated
         - Perform in vivo extracellular tetrode, intracellular sharp, and intracellular patch recordings in locusts
         - Trace recorded neurons stained with immunohistochemistry and image with confocal imaging
+        - Align traced neurons to standardized brain with transformation matrix from CMTK
         - Design and create an odorant and tastant delivery system with fast response times (>5ms), accurate odor concentration (0-100%), and accurate timing of delivery for both stimulants simultaneously (<20ms)
         - Analyze spike rate and membrane potential changes and visualize data using MATLAB
 
@@ -82,6 +83,11 @@
         - Olfactory coding.
         - Gustatory coding.
         - Multimodal sensory integration.
+    - title: Brain Computer Interfaces (BCIs)
+      items: 
+        - Electrode interfaces.
+        - Information Processing.
+        - Neural Signal Processing.
 
 
 - title: Other Interests
