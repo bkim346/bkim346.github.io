@@ -18,4 +18,4 @@ social: true  # includes social icons at the bottom of the page
 
 This is mainly a repository website for the various things I do.
 
-There will be a live data stream of the reef parameters. Also there will be update posts on various projects that I do, such as woodworking projects, reef keeping, reef automation, scuba diving etc. Also this is good practice to just barely understand the smallest amount of html and javascript haha...
+There will be a live data stream of the reef parameters. Also there will be update posts on various projects that I do, such as woodworking projects, reef keeping, reef automation, scuba diving etc. Also this is good practice of html.
